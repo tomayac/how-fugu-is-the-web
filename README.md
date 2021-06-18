@@ -1,0 +1,1 @@
+# project-fugu-api-detector
