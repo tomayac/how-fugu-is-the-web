@@ -1,0 +1,20 @@
+{
+  "name": "Project Fugu 🐡 API Detector",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["activeTab", "webRequest", "webNavigation", "scripting"],
+  "host_permissions": ["https://*/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "320": "blowfish.png"
+    },
+    "default_title": "No Project Fugu 🐡 APIs detected."
+  },
+  "icons": {
+    "320": "blowfish.png"
+  }
+}

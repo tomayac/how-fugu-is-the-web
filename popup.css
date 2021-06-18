@@ -1,0 +1,78 @@
+:root {
+  color-scheme: dark light;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+}
+
+h1,
+h2 {
+  white-space: nowrap;
+}
+
+h1 {
+  font-size: 1rem;
+}
+
+h2 {
+  font-size: 0.85rem;
+  color: hotpink;
+  margin-block-end: 0.25rem;
+}
+
+span {
+  margin-block-end: 0.25rem;
+}
+
+a {
+  color: #03a9f4;
+}
+
+a:link {
+  color: #03a9f4;
+}
+
+a:visited {
+  color: #03a9f4;
+}
+
+a:focus {
+  color: hotpink;
+}
+
+a:hover {
+  color: hotpink;
+}
+
+a:active {
+  color: hotpink;
+}
+
+.parent {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.parent li {
+  margin-block-end: 1.75rem;
+}
+
+.nested {
+  list-style: square;
+  padding-inline-start: 1.25rem;
+  margin-block-end: 0.5rem;
+}
+
+.emoji {
+  filter: grayscale(1);
+}
+
+::marker {
+  color: hotpink;
+}
+
+li {
+  white-space: nowrap;
+}
