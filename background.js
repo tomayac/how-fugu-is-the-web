@@ -1,14 +1,22 @@
+// Make sure this extension works universally.
 self.browser = self.browser || self.chrome;
 
 importScripts(['patterns.js']);
 
-let previousOrigin = '';
-let responseBodies = [];
-let result = new Map();
+// The previously visited URL.
+let previousURL = '';
 
-const updatePopup = async () => {
-  const length = result.size;
-  chrome.tabs.query({ currentWindow: true, active: true }, async ([tab]) => {
+// The response bodies of all resources requested by the page.
+let responseBodies = [];
+
+// The detected Fugu APIs.
+let detectedAPIs = new Map();
+
+// Update the browser popup according to the detected APIs.
+const updatePopup = () => {
+  browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
+    // Reset the badge and the title for the current tab if no APIs are detected.
+    const length = detectedAPIs.size;
     if (!length) {
       await browser.action.setBadgeText({
         text: '',
@@ -16,8 +24,13 @@ const updatePopup = async () => {
       await browser.action.setTitle({
         title: '',
       });
-      return await browser.action.disable({ tabId: tab.id });
+      /*await browser.action.disable({
+        tabId: tab.id,
+      });*/
+      return;
     }
+    // Set the badge and the title in function of the detected APIs
+    // on the current page.
     await browser.action.setBadgeText({
       text: String(length),
       tabId: tab.id,
@@ -34,16 +47,11 @@ const detect = async () => {
   // To make sure we don't match on, e.g., blog posts that contain the patterns,
   // make sure that the file names fulfill certain conditions as a heuristic.
   const checkURLConditions = (where, type) => {
-    // If the pattern has to occur in JavaScript, make sure the file name
-    // includes either `.js` or `.mjs` and uses a correct-ish MIME type
-    // (https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#textjavascript).
+    // The pattern occurs in the JavaScript.
     if (where === 'JavaScript' && type === 'script') {
       return true;
     }
-    // If the pattern has to occur in the Web App Manifest, make sure the file
-    // name includes either `.json` or `.webmanifest` and uses a MIME type that
-    // ends in "json"
-    // (https://w3c.github.io/manifest/#:~:text=file%20extension%3A%20.webmanifest%20or%20.json%3F).
+    // The patterns occurs in the Web App Manifest.
     if (where === 'Web App Manifest' && type === 'other') {
       return true;
     }
@@ -55,62 +63,77 @@ const detect = async () => {
   // result object.
   responseBodies.forEach((har) => {
     for (const [key, value] of Object.entries(patterns)) {
-      if (value.regEx.test(har.response_body)) {
+      const matches = value.regEx.exec(har.response_body);
+      if (matches) {
         if (
-          result.has(key) &&
-          !result.get(key).find((entry) => entry.url === har.url)
+          detectedAPIs.has(key) &&
+          !detectedAPIs.get(key).find((entry) => entry.url === har.url)
         ) {
           if (checkURLConditions(value.where, har.type)) {
-            result.set(
+            detectedAPIs.set(
               key,
-              result.get(key).concat({
+              detectedAPIs.get(key).concat({
                 url: har.url,
                 featureDetection: value.featureDetection,
+                matchingText: matches[0],
               }),
             );
           }
         } else {
           if (checkURLConditions(value.where, har.type)) {
-            result.set(key, [
-              { url: har.url, featureDetection: value.featureDetection },
+            detectedAPIs.set(key, [
+              {
+                url: har.url,
+                featureDetection: value.featureDetection,
+                matchingText: matches[0],
+              },
             ]);
           }
         }
       }
     }
   });
-  if (result.size) {
-    console.log(result.entries());
+  if (detectedAPIs.size) {
+    console.log(detectedAPIs.entries());
     await updatePopup();
   }
 };
 
-const checkAndResetIfOriginChanged = async (url) => {
-  const currentOrigin = new URL(url).origin;
-  if (currentOrigin !== previousOrigin) {
-    previousOrigin = currentOrigin;
+// If the URL has changed, reset everything to the empty state.
+const checkAndResetIfURLChanged = async (url) => {
+  const currentURL = new URL(url.split('#')[0]).href;
+  if (currentURL !== previousURL) {
+    previousURL = currentURL;
     responseBodies = [];
-    result.clear();
+    detectedAPIs.clear();
     await updatePopup();
     return true;
   }
   return false;
 };
 
+// Track each main document, JavaScript, or Web App Manifest request.
 browser.webRequest.onBeforeRequest.addListener(
   async (details) => {
-    console.log(details.url, details.type);
+    console.log(details.type, details.url);
     if (details.type === 'main_frame') {
-      if (await checkAndResetIfOriginChanged(details.url)) {
+      if (!previousURL) {
+        previousURL = new URL(details.url.split('#')[0]).href;
+      }
+      if (await checkAndResetIfURLChanged(details.url)) {
         return;
       }
     }
-    const body = await fetch(details.url).then((response) => response.text());
-    responseBodies.push({
-      url: details.url,
-      type: details.type,
-      response_body: body,
-    });
+    if (
+      !responseBodies.find((responseBody) => details.url === responseBody.url)
+    ) {
+      const body = await fetch(details.url).then((response) => response.text());
+      responseBodies.push({
+        url: details.url,
+        type: details.type,
+        response_body: body,
+      });
+    }
   },
   {
     urls: ['https://*/*'],
@@ -118,23 +141,39 @@ browser.webRequest.onBeforeRequest.addListener(
   },
 );
 
+// When the navigation has completed, detect if any of the tracked
+// requests looks like it contains a Fugu API.
 browser.webNavigation.onCompleted.addListener(detect);
 
-browser.webNavigation.onBeforeNavigate.addListener(async ({ url }) => {
-  await checkAndResetIfOriginChanged(url);
+// Upon each main frame navigation, check if the URL has changed, and if so,
+// reset everything to the empty state.
+browser.webNavigation.onBeforeNavigate.addListener(async ({ url, frameId }) => {
+  if (frameId > 0) {
+    return;
+  }
+  await checkAndResetIfURLChanged(url);
 });
 
+// When the popup asks for results, deliver them, but only if the URLs match.
 browser.runtime.onMessage.addListener(async (message) => {
-  if (message.message === 'request-results') {
-    if (result.size) {
-      await browser.runtime.sendMessage(Array.from(result.entries()));
+  if (message.type === 'request-results') {
+    if (
+      detectedAPIs.size &&
+      previousURL === new URL(message.data.split('#')[0]).href
+    ) {
+      await browser.runtime.sendMessage({
+        type: 'return-results',
+        data: Array.from(detectedAPIs.entries()),
+      });
     }
   }
 });
 
+// When the background service worker gets suspended, reset everything to the
+// empty state.
 browser.runtime.onSuspend.addListener(async () => {
-  previousOrigin = '';
+  previousURL = '';
   responseBodies = [];
-  result.clear();
-  await updatePopup();
+  detectedAPIs.clear();
+  await updatePopup(true);
 });

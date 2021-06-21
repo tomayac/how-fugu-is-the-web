@@ -55,7 +55,7 @@ a:active {
   padding-inline-start: 0;
 }
 
-.parent li {
+.parent > li {
   margin-block-end: 1.75rem;
 }
 
