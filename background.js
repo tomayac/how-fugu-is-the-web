@@ -14,36 +14,40 @@ let detectedAPIs = new Map();
 
 // Update the browser popup according to the detected APIs.
 const updatePopup = () => {
-  browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
+  browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     // Reset the badge and the title for the current tab if no APIs are detected.
     const length = detectedAPIs.size;
     if (!length) {
-      await browser.action.setBadgeText({
+      browser.action.setBadgeText({
         text: '',
-      });
-      await browser.action.setTitle({
-        title: '',
-      });
-      /*await browser.action.disable({
         tabId: tab.id,
-      });*/
+      });
+      browser.action.setTitle({
+        title: '',
+        tabId: tab.id,
+      });
+      browser.action.disable({
+        tabId: tab.id,
+      });
       return;
     }
     // Set the badge and the title in function of the detected APIs
     // on the current page.
-    await browser.action.setBadgeText({
+    browser.action.setBadgeText({
       text: String(length),
       tabId: tab.id,
     });
-    await browser.action.setTitle({
+    browser.action.setTitle({
       title: `${length} Project Fugu 🐡 API${length > 1 ? 's' : ''} detected.`,
       tabId: tab.id,
     });
-    await browser.action.enable({ tabId: tab.id });
+    browser.action.enable({
+      tabId: tab.id,
+    });
   });
 };
 
-const detect = async () => {
+const detect = () => {
   // To make sure we don't match on, e.g., blog posts that contain the patterns,
   // make sure that the file names fulfill certain conditions as a heuristic.
   const checkURLConditions = (where, type) => {
@@ -95,18 +99,18 @@ const detect = async () => {
   });
   if (detectedAPIs.size) {
     console.log(detectedAPIs.entries());
-    await updatePopup();
+    updatePopup();
   }
 };
 
 // If the URL has changed, reset everything to the empty state.
-const checkAndResetIfURLChanged = async (url) => {
+const checkAndResetIfURLChanged = (url) => {
   const currentURL = new URL(url.split('#')[0]).href;
   if (currentURL !== previousURL) {
     previousURL = currentURL;
     responseBodies = [];
     detectedAPIs.clear();
-    await updatePopup();
+    updatePopup();
     return true;
   }
   return false;
@@ -114,25 +118,31 @@ const checkAndResetIfURLChanged = async (url) => {
 
 // Track each main document, JavaScript, or Web App Manifest request.
 browser.webRequest.onBeforeRequest.addListener(
-  async (details) => {
+  (details) => {
     console.log(details.type, details.url);
     if (details.type === 'main_frame') {
       if (!previousURL) {
         previousURL = new URL(details.url.split('#')[0]).href;
       }
-      if (await checkAndResetIfURLChanged(details.url)) {
+      if (checkAndResetIfURLChanged(details.url)) {
         return;
       }
     }
     if (
       !responseBodies.find((responseBody) => details.url === responseBody.url)
     ) {
-      const body = await fetch(details.url).then((response) => response.text());
-      responseBodies.push({
-        url: details.url,
-        type: details.type,
-        response_body: body,
-      });
+      fetch(details.url)
+        .then((response) => response.text())
+        .then((body) => {
+          responseBodies.push({
+            url: details.url,
+            type: details.type,
+            response_body: body,
+          });
+        })
+        .catch((err) => {
+          console.error(err.name, err.message);
+        });
     }
   },
   {
@@ -147,21 +157,21 @@ browser.webNavigation.onCompleted.addListener(detect);
 
 // Upon each main frame navigation, check if the URL has changed, and if so,
 // reset everything to the empty state.
-browser.webNavigation.onBeforeNavigate.addListener(async ({ url, frameId }) => {
+browser.webNavigation.onBeforeNavigate.addListener(({ url, frameId }) => {
   if (frameId > 0) {
     return;
   }
-  await checkAndResetIfURLChanged(url);
+  checkAndResetIfURLChanged(url);
 });
 
 // When the popup asks for results, deliver them, but only if the URLs match.
-browser.runtime.onMessage.addListener(async (message) => {
+browser.runtime.onMessage.addListener((message) => {
   if (message.type === 'request-results') {
     if (
       detectedAPIs.size &&
       previousURL === new URL(message.data.split('#')[0]).href
     ) {
-      await browser.runtime.sendMessage({
+      browser.runtime.sendMessage({
         type: 'return-results',
         data: Array.from(detectedAPIs.entries()),
       });
@@ -171,9 +181,25 @@ browser.runtime.onMessage.addListener(async (message) => {
 
 // When the background service worker gets suspended, reset everything to the
 // empty state.
-browser.runtime.onSuspend.addListener(async () => {
+browser.runtime.onSuspend.addListener(() => {
   previousURL = '';
   responseBodies = [];
   detectedAPIs.clear();
-  await updatePopup(true);
+  updatePopup();
+});
+
+// Make sure the action is clickable when there are detected APIs.
+browser.tabs.onActivated.addListener(({ tabId }) => {
+  browser.action.getBadgeText(
+    {
+      tabId: tabId,
+    },
+    (text) => {
+      if (text && Number(text) > 0) {
+        browser.action.enable({
+          tabId: tabId,
+        });
+      }
+    },
+  );
 });
