@@ -6,6 +6,13 @@ An extension to shine light on the Project Fugu 🐡 APIs web apps try to use.
 
 ## How it works
 
+### API data
+
+The raw data for the different Project Fugu 🐡 APIs is curated in a
+[spreadsheet](https://docs.google.com/spreadsheets/d/1ndxh6sl0fSOLHFlMdSiLPqmGPMDVJqkJFYnQ0Hsmhwo/edit?usp=sharing),
+which is then turned into JavaScript, so keeping the list of APIs updated is
+hopefully a straightforward task.
+
 ### API detection
 
 The extension monitors the requests a page makes via the
@@ -26,6 +33,12 @@ but luckily the popup window in
 uses a service worker, so it can be used via an IIFE that can be run in the
 client or the service worker. An example is
 `(async () => 'periodicSync' in (await navigator.serviceWorker?.ready || self.registration))()`.
+The support categories are listed below:
+
+- ✔️ Supported by your browser.
+- 🚫 Not supported by your browser.
+- 🤷 Support unknown for your browser. (The only way to know would be
+  `user-agent` sniffing.)
 
 ### Deep-linking
 
@@ -51,7 +64,7 @@ to deep-link to the occurrence of a detected API, for example
   `navigator.clipboard.write()` to
   `const nav = navigator; nav.clipboard.write()`, the extension will not detect
   this.
-- In the initial release, code in inline `<script>` tags is not yet consiered.
+- In the initial release, code in inline `<script>` tags is not yet considered.
 
 ## License
 
