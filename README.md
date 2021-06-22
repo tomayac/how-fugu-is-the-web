@@ -2,6 +2,8 @@
 
 An extension to shine light on the Project Fugu 🐡 APIs web apps try to use.
 
+<img width="1168" alt="Screen Shot 2021-06-22 at 16 45 53" src="https://user-images.githubusercontent.com/145676/122972281-41f10d00-d390-11eb-9d81-36d33146c9b3.png">
+
 ## How it works
 
 ### API detection
@@ -49,7 +51,7 @@ to deep-link to the occurrence of a detected API, for example
   `navigator.clipboard.write()` to
   `const nav = navigator; nav.clipboard.write()`, the extension will not detect
   this.
-- In the initial
+- In the initial release, code in inline `<script>` tags is not yet consiered.
 
 ## License
 
