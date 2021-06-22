@@ -31,7 +31,7 @@ client or the service worker. An example is
 
 The extension makes use of [Text Fragment URLs](https://web.dev/text-fragments/)
 to deep-link to the occurrence of a detected API, for example
-[`https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge(`](https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge().
+[`https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge(`](https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge%28).
 
 ## Limitations
 
