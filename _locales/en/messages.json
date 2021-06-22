@@ -1,0 +1,12 @@
+{
+  "extName": { "message": "Project Fugu 🐡 API Detector" },
+  "extDescription": {
+    "message": "An extension to shine light on the Project Fugu 🐡 APIs web apps try to use."
+  },
+  "detectedAPIs": { "message": "Detected Project Fugu 🐡 APIs:" },
+  "madeBy": { "message": "Made by" },
+  "sourceCode": { "message": "Source code on" },
+  "supported": { "message": "Supported by your browser." },
+  "unknown": { "message": "Support unknown for your browser." },
+  "notSupported": { "message": "Not supported by your browser." }
+}

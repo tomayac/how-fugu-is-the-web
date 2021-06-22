@@ -1,0 +1,12 @@
+{
+  "extName": { "message": "Project Fugu 🐡 API Detektor" },
+  "extDescription": {
+    "message": "Eine Erweiterung, um den Fokus auf Project Fugu 🐡 APIs zu richten, die Webapplikationen benutzen wollen."
+  },
+  "detectedAPIs": { "message": "Detektierte Project Fugu 🐡 APIs:" },
+  "madeBy": { "message": "Gebaut von" },
+  "sourceCode": { "message": "Quellcode auf" },
+  "supported": { "message": "Unterstützt von deinem Browser." },
+  "unknown": { "message": "Unterstützung unbekannt für deinen Browser." },
+  "notSupported": { "message": "Nicht unterstützt von deinem Browser." }
+}

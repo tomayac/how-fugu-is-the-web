@@ -5,6 +5,16 @@ import patternsFunc from './patternsFunc.js';
 
 // DOM references.
 const ul = document.querySelector('ul');
+const main = document.querySelector('main');
+
+// Translated strings.
+document.title = browser.i18n.getMessage('extName');
+document.querySelector('h1').textContent =
+  browser.i18n.getMessage('detectedAPIs');
+document.querySelector('#made-by').textContent =
+  browser.i18n.getMessage('madeBy');
+document.querySelector('#source-code').textContent =
+  browser.i18n.getMessage('sourceCode');
 
 // Runs the feature detection functions for all Fugu features.
 const supported = await patternsFunc();
@@ -17,6 +27,9 @@ const displayMessage = (message, tab) => {
     return;
   }
   ul.innerHTML = '';
+  if (message.data.length > 4) {
+    main.style.columns = 2;
+  }
   for (const [key, values] of message.data) {
     const li = document.createElement('li');
     ul.append(li);
@@ -26,10 +39,11 @@ const displayMessage = (message, tab) => {
     const span = document.createElement('span');
     li.append(span);
     span.innerHTML = supported[key]
-      ? '<span class="emoji">✔️</span> Supported in your browser.'
+      ? '<span class="emoji">✔️</span> ' + browser.i18n.getMessage('supported')
       : supported[key] === undefined
-      ? '<span class="emoji">🤷</span> Support unknown for your browser.'
-      : '<span class="emoji">🚫</span> Not supported in your browser.';
+      ? '<span class="emoji">🤷</span> ' + browser.i18n.getMessage('unknown')
+      : '<span class="emoji">🚫</span> ' +
+        browser.i18n.getMessage('notSupported');
     const nestedUl = document.createElement('ul');
     nestedUl.classList.add('nested');
     li.append(nestedUl);

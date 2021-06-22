@@ -2,18 +2,27 @@
   color-scheme: dark light;
   --accent-color: hsl(340deg 100% 43%);
   --link-color: blue;
+  --footer-background-color: #eee;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --accent-color: hotpink;
     --link-color: #03a9f4;
+    --footer-background-color: #222;
   }
 }
 
 body {
   font-family: system-ui, sans-serif;
   font-size: 0.75rem;
+  overscroll-behavior: none;
+  padding-block-end: 2rem;
+}
+
+main {
+  column-gap: 4rem;
+  column-fill: auto;
 }
 
 h1,
@@ -84,4 +93,16 @@ a:active {
 
 li {
   white-space: nowrap;
+  break-inside: avoid-column;
+}
+
+footer {
+  background-color: var(--footer-background-color);
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  font-size: 0.65rem;
+  padding-block: 0.35rem 0.25rem;
+  padding-inline: 0.25rem;
 }

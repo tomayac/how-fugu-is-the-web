@@ -190,16 +190,11 @@ browser.runtime.onSuspend.addListener(() => {
 
 // Make sure the action is clickable when there are detected APIs.
 browser.tabs.onActivated.addListener(({ tabId }) => {
-  browser.action.getBadgeText(
-    {
-      tabId: tabId,
-    },
-    (text) => {
-      if (text && Number(text) > 0) {
-        browser.action.enable({
-          tabId: tabId,
-        });
-      }
-    },
-  );
+  browser.action.getBadgeText({ tabId: tabId }, (text) => {
+    if (text && Number(text) > 0) {
+      browser.action.enable({
+        tabId: tabId,
+      });
+    }
+  });
 });
