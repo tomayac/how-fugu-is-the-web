@@ -47,53 +47,84 @@ const updatePopup = () => {
   });
 };
 
-const detect = () => {
-  // To make sure we don't match on, e.g., blog posts that contain the patterns,
-  // make sure that the file names fulfill certain conditions as a heuristic.
-  const checkURLConditions = (where, type) => {
-    // The pattern occurs in the JavaScript.
-    if (where === 'JavaScript' && type === 'script') {
-      return true;
-    }
-    // The patterns occurs in the Web App Manifest.
-    if (where === 'Web App Manifest' && type === 'other') {
-      return true;
-    }
-    // Fall-through in all other cases.
-    return false;
-  };
+// To make sure we don't match on, e.g., blog posts that contain the patterns,
+// make sure that the file names fulfill certain conditions as a heuristic.
+const checkURLConditions = (where, type) => {
+  // The pattern occurs in the JavaScript (inline in a `<script>` tag or in a
+  // separate file).
+  if (where === 'JavaScript' && (type === 'script' || type === 'main_frame')) {
+    return true;
+  }
+  // The patterns occurs in the Web App Manifest.
+  if (where === 'Web App Manifest' && type === 'other') {
+    return true;
+  }
+  // Fall-through in all other cases.
+  return false;
+};
 
-  // Iterate over all response bodies and over all patterns and populate the
-  // result object.
+const processMatches = (matches, key, value, har) => {
+  if (matches) {
+    if (
+      detectedAPIs.has(key) &&
+      !detectedAPIs.get(key).find((entry) => entry.url === har.url)
+    ) {
+      if (checkURLConditions(value.where, har.type)) {
+        detectedAPIs.set(
+          key,
+          detectedAPIs.get(key).concat({
+            href:
+              har.type === 'main_frame'
+                ? `${browser.runtime.getURL(
+                    'view-source.html',
+                  )}?code=${encodeURIComponent(har.response_body)}`
+                : har.url,
+            url: har.url,
+            featureDetection: value.featureDetection,
+            matchingText: matches[0],
+          }),
+        );
+      }
+    } else {
+      if (checkURLConditions(value.where, har.type)) {
+        detectedAPIs.set(key, [
+          {
+            href:
+              har.type === 'main_frame'
+                ? `${browser.runtime.getURL(
+                    'view-source.html',
+                  )}?code=${encodeURIComponent(har.response_body)}`
+                : har.url,
+            url: har.url,
+            featureDetection: value.featureDetection,
+            matchingText: matches[0],
+          },
+        ]);
+      }
+    }
+  }
+};
+
+// Iterate over all response bodies and over all patterns and populate the
+// result object.
+const detect = () => {
   responseBodies.forEach((har) => {
-    for (const [key, value] of Object.entries(patterns)) {
-      const matches = value.regEx.exec(har.response_body);
-      if (matches) {
-        if (
-          detectedAPIs.has(key) &&
-          !detectedAPIs.get(key).find((entry) => entry.url === har.url)
-        ) {
-          if (checkURLConditions(value.where, har.type)) {
-            detectedAPIs.set(
-              key,
-              detectedAPIs.get(key).concat({
-                url: har.url,
-                featureDetection: value.featureDetection,
-                matchingText: matches[0],
-              }),
-            );
-          }
-        } else {
-          if (checkURLConditions(value.where, har.type)) {
-            detectedAPIs.set(key, [
-              {
-                url: har.url,
-                featureDetection: value.featureDetection,
-                matchingText: matches[0],
-              },
-            ]);
-          }
+    // For inline scripts, go through each script tag one by one.
+    if (har.type === 'main_frame') {
+      let scriptMatches;
+      const scriptRegEx = /\<script[^\>]*\>(.*?)<\/script>/gms;
+      while ((scriptMatches = scriptRegEx.exec(har.response_body)) !== null) {
+        const scriptContent = scriptMatches[1];
+        for (const [key, value] of Object.entries(patterns)) {
+          const matches = value.regEx.exec(scriptContent);
+          processMatches(matches, key, value, har);
         }
+      }
+      // For JavScript files or Web App Manifests, go through file by file.
+    } else {
+      for (const [key, value] of Object.entries(patterns)) {
+        const matches = value.regEx.exec(har.response_body);
+        processMatches(matches, key, value, har);
       }
     }
   });

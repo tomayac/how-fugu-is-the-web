@@ -52,7 +52,9 @@ const displayMessage = (message, tab) => {
       nestedUl.append(nestedLi);
       const a = document.createElement('a');
       nestedLi.append(a);
-      a.href = `${value.url}#:~:text=${encodeURIComponent(value.matchingText)}`;
+      a.href = `${value.href}#:~:text=${encodeURIComponent(
+        value.matchingText,
+      )}`;
       const tabOrigin = new URL(tab.url).origin;
       const resourceURL = new URL(value.url);
       a.textContent =

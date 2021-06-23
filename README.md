@@ -52,6 +52,8 @@ to deep-link to the occurrence of a detected API, for example
   [`chrome.webRequest.onBeforeRequest.addListener()`](https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest)
   API unfortunately does not "see" requests that are handled by a service worker
   ([crbug.com/766433](https://crbug.com/766433)). The workaround is either to
+  hard-reload via
+  <nobr><kbd>⌘</kbd>/<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>r</kbd></nobr>, to
   open DevTools and check the
   [Bypass for network](https://developer.chrome.com/docs/devtools/progressive-web-apps/#:~:text=bypass%20for%20network)
   checkbox in the Service Worker section of the Application tab, or to
@@ -64,7 +66,6 @@ to deep-link to the occurrence of a detected API, for example
   `navigator.clipboard.write()` to
   `const nav = navigator; nav.clipboard.write()`, the extension will not detect
   this.
-- In the initial release, code in inline `<script>` tags is not yet considered.
 
 ## License
 
