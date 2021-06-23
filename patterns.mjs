@@ -1,4 +1,4 @@
-const patterns = {
+export default {
   'WebBluetooth': {
     regEx: /navigator\.bluetooth\.requestDevice\s*\(/g,
     where: 'JavaScript',

@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "The Project Fugu 🐡 API Detector extension provides insights into the advanced Web APIs used by websites.",
   "scripts": {
-    "fix": "npx prettier . --write"
+    "fix": "npx prettier . --write",
+    "prepare": "shx cp -r ./node_modules/fugu-api-data/patterns* ."
   },
   "keywords": [
     "project fugu",
@@ -12,6 +13,8 @@
   "author": "Thomas Steiner <tomac@google.com>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "prettier": "^2.3.1"
+    "fugu-api-data": "^1.0.0",
+    "prettier": "^2.3.1",
+    "shx": "^0.3.3"
   }
 }
