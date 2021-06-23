@@ -18,8 +18,8 @@ hopefully a straightforward task.
 
 The extension monitors the requests a page makes via the
 [`chrome.webRequest.onBeforeRequest.addListener()`](https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest)
-API. Each response body, grouped by JavaScript response bodies and Web App
-Manifest response bodies, is then run through a set of regular expressions like
+API. Each response body, grouped by main frame, JavaScript, and Web App Manifest
+response bodies, is then run through a set of regular expressions like
 `/navigator\.hid\.requestDevice\s*\(/g` to determine if the code hints at a
 Project Fugu&nbsp;🐡 API potentially being used.
 
@@ -34,6 +34,7 @@ but luckily the popup window in
 uses a service worker, so it can be used via an IIFE that can be run in the
 client or the service worker. An example is
 `(async () => 'periodicSync' in (await navigator.serviceWorker?.ready || self.registration))()`.
+
 The support categories are listed below:
 
 - ✔️ Supported by your browser.
@@ -46,23 +47,27 @@ The support categories are listed below:
 The extension makes use of [Text Fragment URLs](https://web.dev/text-fragments/)
 to deep-link to the occurrence of a detected API, for example
 [`https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge(`](https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge%28).
+For main frame documents, the source code gets rendered in a helper HTML page
+controlled by the extension, since it is impossible to link to `view-source:`
+protocol links.
 
 ## Limitations
 
 - The
   [`chrome.webRequest.onBeforeRequest.addListener()`](https://developer.chrome.com/docs/extensions/reference/webRequest/#event-onBeforeRequest)
   API unfortunately does not "see" requests that are handled by a service worker
-  ([crbug.com/766433](https://crbug.com/766433)). The workaround is either to
-  hard-reload via
-  <nobr><kbd>⌘</kbd>/<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>r</kbd></nobr>, to
-  open DevTools and check the
-  [Bypass for network](https://developer.chrome.com/docs/devtools/progressive-web-apps/#:~:text=bypass%20for%20network)
-  checkbox in the Service Worker section of the Application tab, or to
-  [Clear storage](https://developer.chrome.com/docs/devtools/progressive-web-apps/#clear-storage)
-  in the Storage section of the Application tab.
-- The extension does _static_ code analysis, that is, there is no guarantee that
-  the app actually uses the code snippet where a Project Fugu&nbsp;🐡 API was
-  detected.
+  ([crbug.com/766433](https://crbug.com/766433)). There are three possible
+  workarounds for this:
+  - Hard-reload via
+    <nobr><kbd>⌘</kbd>/<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>r</kbd></nobr>.
+  - Open DevTools and check the
+    [Bypass for network](https://developer.chrome.com/docs/devtools/progressive-web-apps/#:~:text=bypass%20for%20network)
+    checkbox in the Service Worker section of the Application tab.
+  - [Clear storage](https://developer.chrome.com/docs/devtools/progressive-web-apps/#clear-storage)
+    in the Storage section of the Application tab.
+- The extension only does _static_ code analysis, that is, there is no guarantee
+  that the app actually uses the code snippet where a Project Fugu&nbsp;🐡 API
+  was detected.
 - Heavily minified code will not be detected. For example, if an app minifies
   `navigator.clipboard.write()` to
   `const nav = navigator; nav.clipboard.write()`, the extension will not detect
