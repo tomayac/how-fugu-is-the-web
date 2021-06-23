@@ -8,5 +8,15 @@
   "sourceCode": { "message": "Source code on" },
   "supported": { "message": "Supported by your browser." },
   "unknown": { "message": "Support unknown for your browser." },
-  "notSupported": { "message": "Not supported by your browser." }
+  "notSupported": { "message": "Not supported by your browser." },
+  "noAPIsDetected": { "message": "No Project Fugu 🐡 APIs detected." },
+  "actionTitle": {
+    "message": "$LENGTH Project Fugu 🐡 $API_OR_APIS detected.",
+    "placeholders": {
+      "length": { "content": "$1" },
+      "api_or_apis": { "content": "$2" }
+    }
+  },
+  "api": { "message": "API" },
+  "apis": { "message": "APIs" }
 }

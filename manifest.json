@@ -14,7 +14,7 @@
     "default_icon": {
       "320": "blowfish.png"
     },
-    "default_title": "No Project Fugu 🐡 APIs detected."
+    "default_title": "__MSG_noAPIsDetected__"
   },
   "icons": {
     "320": "blowfish.png"

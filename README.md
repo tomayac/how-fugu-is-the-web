@@ -1,6 +1,7 @@
-# Project Fugu 🐡 API Detector
+# Project Fugu&nbsp;🐡 API Detector
 
-An extension to shine light on the Project Fugu 🐡 APIs web apps try to use.
+An extension to shine light on the Project Fugu&nbsp;🐡 APIs web apps try to
+use.
 
 <img width="1168" alt="Screen Shot 2021-06-22 at 16 45 53" src="https://user-images.githubusercontent.com/145676/122972281-41f10d00-d390-11eb-9d81-36d33146c9b3.png">
 
@@ -8,7 +9,7 @@ An extension to shine light on the Project Fugu 🐡 APIs web apps try to use.
 
 ### API data
 
-The raw data for the different Project Fugu 🐡 APIs is curated in a
+The raw data for the different Project Fugu&nbsp;🐡 APIs is curated in a
 [spreadsheet](https://docs.google.com/spreadsheets/d/1ndxh6sl0fSOLHFlMdSiLPqmGPMDVJqkJFYnQ0Hsmhwo/edit?usp=sharing),
 which is then turned into JavaScript, so keeping the list of APIs updated is
 hopefully a straightforward task.
@@ -20,11 +21,11 @@ The extension monitors the requests a page makes via the
 API. Each response body, grouped by JavaScript response bodies and Web App
 Manifest response bodies, is then run through a set of regular expressions like
 `/navigator\.hid\.requestDevice\s*\(/g` to determine if the code hints at a
-Project Fugu 🐡 API potentially being used.
+Project Fugu&nbsp;🐡 API potentially being used.
 
 ### Browser support detection
 
-Most Project Fugu 🐡 APIs are easily feature-detectable by checking for the
+Most Project Fugu&nbsp;🐡 APIs are easily feature-detectable by checking for the
 existence of interfaces or properties, for example, as in
 `'BarcodeDetector' in window`. Other APIs require a
 [`ServiceWorkerRegistration`](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration),
@@ -60,7 +61,7 @@ to deep-link to the occurrence of a detected API, for example
   [Clear storage](https://developer.chrome.com/docs/devtools/progressive-web-apps/#clear-storage)
   in the Storage section of the Application tab.
 - The extension does _static_ code analysis, that is, there is no guarantee that
-  the app actually uses the code snippet where a Project Fugu 🐡 API was
+  the app actually uses the code snippet where a Project Fugu&nbsp;🐡 API was
   detected.
 - Heavily minified code will not be detected. For example, if an app minifies
   `navigator.clipboard.write()` to

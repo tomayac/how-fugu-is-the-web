@@ -12,9 +12,36 @@ let responseBodies = [];
 // The detected Fugu APIs.
 let detectedAPIs = new Map();
 
+// For translation strings.
+let messages;
+
+// Need to roll my own `chrome.runtime.getMessage()` replacement due to
+// https://crbug.com/1159438.
+const getMessages = async () => {
+  return new Promise((resolve) => {
+    browser.i18n.getAcceptLanguages(async (languages) => {
+      const language = languages[0].split('-')[0];
+      const messagesURL = browser.runtime.getURL(
+        `_locales/${language}/messages.json`,
+      );
+      messages = await fetch(messagesURL)
+        .then((response) => response.json())
+        .catch(async (_) => {
+          const messagesDefaultURL = browser.runtime.getURL(
+            '_locales/en/messages.json',
+          );
+          return await fetch(messagesDefaultURL).then((response) =>
+            response.json(),
+          );
+        });
+      resolve(messages);
+    });
+  });
+};
+
 // Update the browser popup according to the detected APIs.
 const updatePopup = () => {
-  browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+  browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
     // Reset the badge and the title for the current tab if no APIs are detected.
     const length = detectedAPIs.size;
     if (!length) {
@@ -37,8 +64,12 @@ const updatePopup = () => {
       text: String(length),
       tabId: tab.id,
     });
+    messages = messages || (await getMessages());
+    const apiOrAPIs = length > 1 ? messages.apis.message : messages.api.message;
     browser.action.setTitle({
-      title: `${length} Project Fugu 🐡 API${length > 1 ? 's' : ''} detected.`,
+      title: messages.actionTitle.message
+        .replace('$LENGTH', length)
+        .replace('$API_OR_APIS', apiOrAPIs),
       tabId: tab.id,
     });
     browser.action.enable({
