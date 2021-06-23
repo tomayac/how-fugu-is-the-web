@@ -11,8 +11,7 @@ use.
 
 The raw data for the different Project Fugu&nbsp;🐡 APIs is curated in the
 [fugu-api-data](https://github.com/tomayac/fugu-api-data/blob/main/README.md) project,
-which is then turned into JavaScript, so keeping the list of APIs updated is
-hopefully a straightforward task.
+so keeping the list of APIs updated is a straightforward task independent of the extension.
 
 ### API detection
 
