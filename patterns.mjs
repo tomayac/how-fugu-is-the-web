@@ -249,7 +249,7 @@ export default {
     featureDetection: `(async () => 'launchQueue' in self)()`,
   },
   'Notification Triggers': {
-    regEx: /showTrigger\s*\:\s*/g,
+    regEx: /showTrigger\s*\:\s*new TimestampTrigger\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'showTrigger' in Notification.prototype)(),
     featureDetection: `(async () => 'showTrigger' in Notification.prototype)()`,
