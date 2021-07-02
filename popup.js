@@ -29,9 +29,6 @@ const displayMessage = (message, tab) => {
     return;
   }
   ul.innerHTML = '';
-  if (message.data.length > 4) {
-    main.style.columns = 2;
-  }
   for (const [key, values] of message.data) {
     const li = document.createElement('li');
     ul.append(li);
@@ -73,9 +70,75 @@ const displayMessage = (message, tab) => {
   }
 };
 
+const shareTextOnly = async (shareData) => {
+  delete shareData.files;
+  try {
+    await navigator.share?.(shareData);
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      console.error(err.name, err.message);
+    }
+  }
+};
+
+button.addEventListener('click', async () => {
+  const canonical = 'https://howfuguismybrowser.dev/';
+  const blob = await createScreenshot();
+  const files = [new File([blob], 'howfuguismybrowser', { type: blob.type })];
+  browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+    const url = tab.url;
+    browser.action.getBadgeText({ tabId: tab.id }, async (text) => {
+      const numAPIs = Number(text);
+      /* eslint-disable no-irregular-whitespace */
+      const message = `🙋 I just found an app…
+
+👉 \`${url}\` 👈
+
+…that uses ${numAPIs} Fugu API${numAPIs === 1 ? '' : 's'} 🐡!
+
+How Fugu 🐡 are your apps? Find out with the extension ${canonical} and share with #HowFuguIsTheWeb!`.trim();
+      /* eslint-enable no-irregular-whitespace */
+
+      const shareData = {
+        text: message,
+        title: '',
+        files,
+      };
+      console.log(shareData)
+      if (!navigator.canShare?.(shareData)) {
+        return shareTextOnly(shareData);
+      }
+      try {
+        await navigator.share?.(shareData);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error(err.name, err.message);
+          shareTextOnly(shareData);
+        }
+      }
+    });
+  });
+});
+
 const createScreenshot = async () => {
-  const canvas = await html2canvas(document.body);
-  document.body.append(canvas);
+  const computedStyle = getComputedStyle(document.documentElement);
+  const mainColor = computedStyle.getPropertyValue('--main-color');
+  const mainBackgroundColor = computedStyle.getPropertyValue(
+    '--main-background-color',
+  );
+  const accentColor = computedStyle.getPropertyValue('--accent-color');
+  const linkColor = computedStyle.getPropertyValue('--link-color');
+  const footerBackgroundColor = computedStyle.getPropertyValue(
+    '--footer-background-color',
+  );
+  const clone = document.body.firstElementChild.cloneNode(true);
+  clone.style.color = mainColor;
+  clone.style.backgroundColor = mainBackgroundColor;
+  clone.querySelector('button').style.display = 'none';
+  clone.querySelectorAll('a').forEach((a) => (a.style.color = linkColor));
+  document.body.append(clone);
+  const canvas = await html2canvas(clone);
+  clone.remove();
   return new Promise((resolve) =>
     canvas.toBlob((blob) => {
       resolve(blob);
@@ -83,6 +146,10 @@ const createScreenshot = async () => {
   );
 };
 
+/Apple/.test(navigator.vendor)
+  ? button.classList.add('ios')
+  : button.classList.add('others');
+button.style.visibility = 'visible';
 button.addEventListener('click', async () => {
   await createScreenshot();
 });

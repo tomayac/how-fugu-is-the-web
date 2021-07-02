@@ -1,5 +1,8 @@
 :root {
   color-scheme: dark light;
+
+  --main-background-color: #fff;
+  --main-color: #111;
   --accent-color: hsl(340deg 100% 43%);
   --link-color: blue;
   --footer-background-color: #eee;
@@ -7,7 +10,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --accent-color: hotpink;
+    --main-background-color: #111;
+    --main-color: #eee;
+    --accent-color: deeppink;
     --link-color: #03a9f4;
     --footer-background-color: #222;
   }
@@ -18,11 +23,6 @@ body {
   font-size: 0.85rem;
   overscroll-behavior: none;
   padding-block-end: 2rem;
-}
-
-main {
-  column-gap: 4rem;
-  column-fill: auto;
 }
 
 h1,
@@ -38,6 +38,39 @@ h2 {
   font-size: 0.85rem;
   color: var(--accent-color);
   margin-block-end: 0.25rem;
+}
+
+button {
+  visibility: hidden;
+  display: inline-block;
+  border: none;
+  padding-inline: 1rem;
+  margin: 0;
+  height: 2.5rem;
+  text-decoration: none;
+  background-color: dodgerblue;
+  background-position-y: 50%;
+  background-position-x: 15%;
+  border-radius: 4px;
+  color: #fff;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  text-align: center;
+  transition: background 250ms ease-in-out, transform 150ms ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-repeat: no-repeat;
+  width: 8rem;
+}
+
+button:hover {
+  background-color: var(--link-color);
+}
+
+button:active {
+  transform: scale(0.99);
 }
 
 span {
@@ -87,6 +120,14 @@ a:active {
   margin-block-end: 0.5rem;
 }
 
+.ios {
+  background-image: url(share-ios.svg);
+}
+
+.others {
+  background-image: url(share-others.svg);
+}
+
 .emoji {
   filter: grayscale(1);
 }
@@ -102,7 +143,6 @@ a:active {
 
 li {
   white-space: nowrap;
-  break-inside: avoid-column;
 }
 
 footer {
