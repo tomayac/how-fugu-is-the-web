@@ -113,6 +113,7 @@ const processMatches = (matches, key, value, har) => {
             url: har.url,
             featureDetection: value.featureDetection,
             matchingText: matches[0],
+            documentation: value.documentation,
           }),
         );
       }
@@ -129,6 +130,7 @@ const processMatches = (matches, key, value, har) => {
             url: har.url,
             featureDetection: value.featureDetection,
             matchingText: matches[0],
+            documentation: value.documentation,
           },
         ]);
       }

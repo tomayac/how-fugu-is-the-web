@@ -10,8 +10,9 @@ use.
 ### API data
 
 The raw data for the different Project Fugu&nbsp;🐡 APIs is curated in the
-[fugu-api-data](https://github.com/tomayac/fugu-api-data/blob/main/README.md) project,
-so keeping the list of APIs updated is a straightforward task independent of the extension.
+[fugu-api-data](https://github.com/tomayac/fugu-api-data/blob/main/README.md)
+project, so keeping the list of APIs updated is a straightforward task
+independent of the extension.
 
 ### API detection
 

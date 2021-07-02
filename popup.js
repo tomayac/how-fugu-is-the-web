@@ -2,10 +2,12 @@
 self.browser = self.browser || self.chrome;
 
 import patternsFunc from './patternsFunc.js';
+import html2canvas from './html2canvas.esm.js';
 
 // DOM references.
 const ul = document.querySelector('ul');
 const main = document.querySelector('main');
+const button = document.querySelector('button');
 
 // Translated strings.
 document.title = browser.i18n.getMessage('extName');
@@ -23,7 +25,7 @@ const supported = await patternsFunc();
 // background service worker or be cached and come from the
 // content script.
 const displayMessage = (message, tab) => {
-  if (!message.data.length) {
+  if (!message?.data?.length) {
     return;
   }
   ul.innerHTML = '';
@@ -39,11 +41,17 @@ const displayMessage = (message, tab) => {
     const span = document.createElement('span');
     li.append(span);
     span.innerHTML = supported[key]
-      ? '<span class="emoji">✔️</span> ' + browser.i18n.getMessage('supported')
+      ? `<span class="emoji">✔️</span> ${browser.i18n.getMessage('supported')} `
       : supported[key] === undefined
-      ? '<span class="emoji">🤷</span> ' + browser.i18n.getMessage('unknown')
-      : '<span class="emoji">🚫</span> ' +
-        browser.i18n.getMessage('notSupported');
+      ? `<span class="emoji">🤷</span> ${browser.i18n.getMessage('unknown')} `
+      : `<span class="emoji">🚫</span> ${browser.i18n.getMessage(
+          'notSupported',
+        )} `;
+    const a = document.createElement('a');
+    li.append(a);
+    a.href = values[0].documentation;
+    a.classList.add('info');
+    a.innerHTML = `<span class="help">?\u20DD</span>`;
     const nestedUl = document.createElement('ul');
     nestedUl.classList.add('nested');
     li.append(nestedUl);
@@ -64,6 +72,20 @@ const displayMessage = (message, tab) => {
     });
   }
 };
+
+const createScreenshot = async () => {
+  const canvas = await html2canvas(document.body);
+  document.body.append(canvas);
+  return new Promise((resolve) =>
+    canvas.toBlob((blob) => {
+      resolve(blob);
+    }),
+  );
+};
+
+button.addEventListener('click', async () => {
+  await createScreenshot();
+});
 
 // Receives messages from either the background service worker or
 // the content script. If the message comes from the background
@@ -93,8 +115,23 @@ browser.runtime.onMessage.addListener((message, sender) => {
 
 // Race the background service worker against the cached result.
 browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-  // Ask the background service worker.
-  browser.runtime.sendMessage({ type: 'request-results', data: tab.url });
+  browser.runtime.sendMessage(
+    { type: 'request-results', data: tab.url },
+    () => {
+      if (browser.runtime.lastError) {
+        return;
+      }
+    },
+  );
+
   // Ask the content script.
-  browser.tabs.sendMessage(tab.id, { type: 'request-results', data: tab.url });
+  browser.tabs.sendMessage(
+    tab.id,
+    { type: 'request-results', data: tab.url },
+    () => {
+      if (browser.runtime.lastError) {
+        return;
+      }
+    },
+  );
 });

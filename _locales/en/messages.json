@@ -10,6 +10,7 @@
   "unknown": { "message": "Support unknown for your browser." },
   "notSupported": { "message": "Not supported by your browser." },
   "noAPIsDetected": { "message": "No Project Fugu 🐡 APIs detected." },
+  "learnMore": { "message": "Learn more" },
   "actionTitle": {
     "message": "$LENGTH Project Fugu 🐡 $API_OR_APIS detected.",
     "placeholders": {
