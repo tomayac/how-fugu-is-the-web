@@ -13,9 +13,9 @@
   "author": "Thomas Steiner <tomac@google.com>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "fugu-api-data": "^1.1.0",
-    "html2canvas": "^1.0.0-rc.7",
-    "prettier": "^2.3.1",
+    "fugu-api-data": "^1.2.0",
+    "html2canvas": "^1.1.4",
+    "prettier": "^2.3.2",
     "shx": "^0.3.3"
   }
 }
