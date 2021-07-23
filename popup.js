@@ -9,6 +9,8 @@ const ul = document.querySelector('ul');
 const main = document.querySelector('main');
 const button = document.querySelector('button');
 
+let dataURL;
+
 // Translated strings.
 document.title = browser.i18n.getMessage('extName');
 document.querySelector('h1').textContent =
@@ -70,21 +72,9 @@ const displayMessage = (message, tab) => {
   }
 };
 
-const shareTextOnly = async (shareData) => {
-  delete shareData.files;
-  try {
-    await navigator.share?.(shareData);
-  } catch (err) {
-    if (err.name !== 'AbortError') {
-      console.error(err.name, err.message);
-    }
-  }
-};
-
 button.addEventListener('click', async () => {
-  const canonical = 'https://howfuguismybrowser.dev/';
-  const blob = await createScreenshot();
-  const files = [new File([blob], 'howfuguismybrowser', { type: blob.type })];
+  const canonical =
+    'https://chrome.google.com/webstore/detail/project-fugu-%F0%9F%90%A1-api-detec/apcghpabklkjjgpfoplnglnjghonjhdl';
   browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     const url = tab.url;
     browser.action.getBadgeText({ tabId: tab.id }, async (text) => {
@@ -96,26 +86,26 @@ button.addEventListener('click', async () => {
 
 …that uses ${numAPIs} Fugu API${numAPIs === 1 ? '' : 's'} 🐡!
 
-How Fugu 🐡 are your apps? Find out with the extension ${canonical} and share with #HowFuguIsTheWeb!`.trim();
+How Fugu 🐡 are your apps? Find out with the Project Fugu API Detector extension (${canonical}) and share on #HowFuguIsTheWeb!`.trim();
       /* eslint-enable no-irregular-whitespace */
 
       const shareData = {
         text: message,
         title: '',
-        files,
+        dataURL,
       };
-      console.log(shareData)
-      if (!navigator.canShare?.(shareData)) {
-        return shareTextOnly(shareData);
-      }
-      try {
-        await navigator.share?.(shareData);
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.error(err.name, err.message);
-          shareTextOnly(shareData);
-        }
-      }
+      browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+        browser.tabs.sendMessage(
+          tab.id,
+          { type: 'share-results', data: shareData },
+          () => {
+            if (browser.runtime.lastError) {
+              return;
+            }
+          },
+        );
+        window.close();
+      });
     });
   });
 });
@@ -139,29 +129,27 @@ const createScreenshot = async () => {
   document.body.append(clone);
   const canvas = await html2canvas(clone);
   clone.remove();
-  return new Promise((resolve) =>
-    canvas.toBlob((blob) => {
-      resolve(blob);
-    }),
-  );
+  return canvas.toDataURL();
 };
-
-/Apple/.test(navigator.vendor)
-  ? button.classList.add('ios')
-  : button.classList.add('others');
-button.style.visibility = 'visible';
-button.addEventListener('click', async () => {
-  await createScreenshot();
-});
 
 // Receives messages from either the background service worker or
 // the content script. If the message comes from the background
 // service worker, sets up the caching of the message in the content
 // script of the page.
 browser.runtime.onMessage.addListener((message, sender) => {
-  browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+  browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
     if (message.type === 'return-results') {
       displayMessage(message, tab);
+      if ('share' in navigator) {
+        dataURL = await createScreenshot();
+        button.style.visibility = 'visible';
+        /Apple/.test(navigator.vendor)
+          ? button.classList.add('ios')
+          : button.classList.add('others');
+        button.addEventListener('click', async () => {
+          await createScreenshot();
+        });
+      }
     }
     if (!sender.tab) {
       browser.scripting.executeScript(

@@ -19,7 +19,7 @@
 }
 
 body {
-  font-family: system-ui, sans-serif;
+  font-family: sans-serif;
   font-size: 0.85rem;
   overscroll-behavior: none;
   padding-block-end: 2rem;
