@@ -37,7 +37,7 @@ client or the service worker. An example is
 
 The support categories are listed below:
 
-- ✔️ Supported by your browser.
+- ✅ Supported by your browser.
 - 🚫 Not supported by your browser.
 - 🤷 Support unknown for your browser. (The only way to know would be
   `user-agent` sniffing.)

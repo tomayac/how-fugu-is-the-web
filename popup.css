@@ -109,6 +109,12 @@ a:active {
   margin-block-end: 1.75rem;
 }
 
+.wrapper {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .nested {
   list-style: square;
   padding-inline-start: 1.25rem;
@@ -116,25 +122,15 @@ a:active {
 }
 
 .ios {
-  background-image: url(share-ios.svg);
+  background-image: url(./assets/share-ios.svg);
 }
 
 .others {
-  background-image: url(share-others.svg);
+  background-image: url(./assets/share-others.svg);
 }
 
 .emoji {
   filter: grayscale(1);
-}
-
-.help::before {
-  content: '(';
-  color: var(--main-color);
-}
-
-.help::after {
-  content: ')';
-  color: var(--main-color);
 }
 
 .help {

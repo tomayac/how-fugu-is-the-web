@@ -1,7 +1,7 @@
 {
   "name": "__MSG_extName__",
   "description": "__MSG_extDescription__",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "default_locale": "en",
   "manifest_version": 3,
   "background": {
@@ -12,11 +12,11 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "320": "blowfish.png"
+      "320": "./assets/blowfish.png"
     },
     "default_title": "__MSG_noAPIsDetected__"
   },
   "icons": {
-    "320": "blowfish.png"
+    "320": "./assets/blowfish.png"
   }
 }

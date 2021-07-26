@@ -3,7 +3,8 @@
   "extDescription": {
     "message": "Eine Erweiterung, um den Fokus auf Project Fugu 🐡 APIs zu richten, die Webapplikationen benutzen wollen."
   },
-  "detectedAPIs": { "message": "Detektierte Project Fugu 🐡 APIs:" },
+  "detectedAPIs": { "message": "Detektierte Project Fugu APIs:" },
+  "share": { "message": "Teilen" },
   "madeBy": { "message": "Gebaut von" },
   "sourceCode": { "message": "Quellcode auf" },
   "supported": { "message": "Unterstützt von deinem Browser." },
