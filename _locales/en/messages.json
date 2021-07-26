@@ -1,7 +1,7 @@
 {
-  "extName": { "message": "Project Fugu 🐡 API Detector" },
+  "extName": { "message": "How Fugu is the Web?" },
   "extDescription": {
-    "message": "An extension to shine light on the Project Fugu 🐡 APIs web apps try to use."
+    "message": "An extension to shine light on the Project Fugu 🐡 APIs web apps want to use."
   },
   "detectedAPIs": { "message": "Detected Project Fugu 🐡 APIs:" },
   "madeBy": { "message": "Made by" },
@@ -10,7 +10,7 @@
   "unknown": { "message": "Support unknown for your browser." },
   "notSupported": { "message": "Not supported by your browser." },
   "noAPIsDetected": { "message": "No Project Fugu 🐡 APIs detected." },
-  "learnMore": { "message": "Learn more" },
+  "details": { "message": "Details" },
   "actionTitle": {
     "message": "$LENGTH Project Fugu 🐡 $API_OR_APIS detected.",
     "placeholders": {

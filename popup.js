@@ -6,9 +6,13 @@ import html2canvas from './html2canvas.esm.js';
 
 // DOM references.
 const ul = document.querySelector('ul');
-const main = document.querySelector('main');
 const button = document.querySelector('button');
+const footer = document.querySelector('footer');
+const body = document.body;
 
+// This needs to be prepared before the share button is clicked,
+// else, the user gesture would be consumed by the time the PNG
+// image can be created.
 let dataURL;
 
 // Translated strings.
@@ -19,6 +23,7 @@ document.querySelector('#made-by').textContent =
   browser.i18n.getMessage('madeBy');
 document.querySelector('#source-code').textContent =
   browser.i18n.getMessage('sourceCode');
+const footerHTML = footer.innerHTML;
 
 // Runs the feature detection functions for all Fugu features.
 const supported = await patternsFunc();
@@ -49,8 +54,8 @@ const displayMessage = (message, tab) => {
     const a = document.createElement('a');
     li.append(a);
     a.href = values[0].documentation;
-    a.classList.add('info');
-    a.innerHTML = `<span class="help">?\u20DD</span>`;
+    a.classList.add('help');
+    a.innerHTML = browser.i18n.getMessage('details');
     const nestedUl = document.createElement('ul');
     nestedUl.classList.add('nested');
     li.append(nestedUl);
@@ -121,14 +126,16 @@ const createScreenshot = async () => {
   const footerBackgroundColor = computedStyle.getPropertyValue(
     '--footer-background-color',
   );
-  const clone = document.body.firstElementChild.cloneNode(true);
-  clone.style.color = mainColor;
-  clone.style.backgroundColor = mainBackgroundColor;
-  clone.querySelector('button').style.display = 'none';
-  clone.querySelectorAll('a').forEach((a) => (a.style.color = linkColor));
-  document.body.append(clone);
-  const canvas = await html2canvas(clone);
-  clone.remove();
+  document.documentElement.style.color = mainColor;
+  body.style.color = mainColor;
+  body.style.backgroundColor = mainBackgroundColor;
+  body.querySelectorAll('a').forEach((a) => (a.style.color = linkColor));
+  const link = footer.querySelector('a:nth-of-type(2)')
+  link.textContent = 'chrome.google.com/webstore/search/apcghpabklkjjgpfoplnglnjghonjhdl'
+  link.href = 'https://chrome.google.com/webstore/search/apcghpabklkjjgpfoplnglnjghonjhdl';
+  footer.innerHTML = footer.innerHTML.replace(browser.i18n.getMessage('sourceCode'), 'How Fugu is the Web?');
+  const canvas = await html2canvas(document.body, {backgroundColor: mainBackgroundColor});
+  footer.innerHTML = footerHTML;
   return canvas.toDataURL();
 };
 
@@ -142,13 +149,10 @@ browser.runtime.onMessage.addListener((message, sender) => {
       displayMessage(message, tab);
       if ('share' in navigator) {
         dataURL = await createScreenshot();
-        button.style.visibility = 'visible';
         /Apple/.test(navigator.vendor)
           ? button.classList.add('ios')
           : button.classList.add('others');
-        button.addEventListener('click', async () => {
-          await createScreenshot();
-        });
+        button.style.display = 'inline-block';
       }
     }
     if (!sender.tab) {
