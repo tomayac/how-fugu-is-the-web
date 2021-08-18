@@ -16,6 +16,7 @@ if (typeof lastMessage === 'undefined') {
         data: lastMessage,
       });
     } else if (message.type === 'share-results') {
+      // The fallback when rich sharing isn't available.
       const shareTextOnly = async (shareData) => {
         try {
           await navigator.share?.(shareData);
@@ -25,7 +26,7 @@ if (typeof lastMessage === 'undefined') {
           }
         }
       };
-
+      // Try rich sharing first.
       const share = async (shareData) => {
         const actuallyShare = async () => {
           document.removeEventListener('pointermove', actuallyShare);

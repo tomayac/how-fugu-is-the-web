@@ -8,9 +8,9 @@ const CANONICAL = 'https://goo.gle/how-fugu-is-the-web';
 
 // DOM references.
 const ul = document.querySelector('ul');
-const button = document.querySelector('button');
+const shareButton = document.querySelector('button');
 const footer = document.querySelector('footer');
-const heading = document.querySelector('h1')
+const heading = document.querySelector('h1');
 const body = document.body;
 
 // This needs to be prepared before the share button is clicked,
@@ -20,28 +20,25 @@ let dataURL;
 
 // Translated strings.
 document.title = browser.i18n.getMessage('extName');
-heading.textContent =
-  browser.i18n.getMessage('detectedAPIs');
+heading.textContent = browser.i18n.getMessage('detectedAPIs');
 document.querySelector('#made-by').textContent =
   browser.i18n.getMessage('madeBy');
 document.querySelector('#source-code').textContent =
   browser.i18n.getMessage('sourceCode');
-button.textContent = browser.i18n.getMessage('share');
+shareButton.textContent = browser.i18n.getMessage('share');
 const footerHTML = footer.innerHTML;
 const headingHTML = heading.innerHTML;
 
 // Runs the feature detection functions for all Fugu features.
 const supported = await patternsFunc();
 
-// Render the message HTML. The message can come from the
-// background service worker or be cached and come from the
-// content script.
+// Render the message HTML. The message comes from the content script.
 const displayMessage = (message, tab) => {
-  if (!message?.data?.length) {
+  if (!message.data) {
     return;
   }
   ul.innerHTML = '';
-  for (const [key, values] of message.data) {
+  for (const [key, values] of Object.entries(message.data)) {
     const li = document.createElement('li');
     ul.append(li);
     const h2 = document.createElement('h2');
@@ -82,7 +79,7 @@ const displayMessage = (message, tab) => {
   }
 };
 
-button.addEventListener('click', async () => {
+shareButton.addEventListener('click', async () => {
   browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     const url = tab.url;
     browser.action.getBadgeText({ tabId: tab.id }, async (text) => {
@@ -119,7 +116,6 @@ How Fugu 🐡 is the Web? Install the extension from ${CANONICAL} and share on 
 });
 
 const createScreenshot = async (url) => {
-  console.log(url)
   const computedStyle = getComputedStyle(document.documentElement);
   const mainColor = computedStyle.getPropertyValue('--main-color');
   const mainBackgroundColor = computedStyle.getPropertyValue(
@@ -130,21 +126,26 @@ const createScreenshot = async (url) => {
   body.style.color = mainColor;
   body.style.backgroundColor = mainBackgroundColor;
   body.querySelectorAll('a').forEach((a) => (a.style.color = linkColor));
-  const link = footer.querySelector('a:nth-of-type(2)')
+  const link = footer.querySelector('a:nth-of-type(2)');
   link.textContent = CANONICAL;
   link.href = CANONICAL;
-  footer.innerHTML = footer.innerHTML.replace(browser.i18n.getMessage('sourceCode'), '<br/>Install the extension from');
-  heading.innerHTML = headingHTML.replace(/:$/, `<br/><a href ="${url}">${url}</a>:`);
-  const canvas = await html2canvas(document.body, {backgroundColor: mainBackgroundColor});
+  footer.innerHTML = footer.innerHTML.replace(
+    browser.i18n.getMessage('sourceCode'),
+    '<br/>Install the extension from',
+  );
+  heading.innerHTML = headingHTML.replace(
+    /:$/,
+    `<br/><a href ="${url}">${url}</a>:`,
+  );
+  const canvas = await html2canvas(document.body, {
+    backgroundColor: mainBackgroundColor,
+  });
   footer.innerHTML = footerHTML;
   heading.innerHTML = headingHTML;
   return canvas.toDataURL();
 };
 
-// Receives messages from either the background service worker or
-// the content script. If the message comes from the background
-// service worker, sets up the caching of the message in the content
-// script of the page.
+// Receives messages from the content script.
 browser.runtime.onMessage.addListener((message, sender) => {
   browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
     if (message.type === 'return-results') {
@@ -152,39 +153,16 @@ browser.runtime.onMessage.addListener((message, sender) => {
       if ('share' in navigator) {
         dataURL = await createScreenshot(tab.url);
         /Apple/.test(navigator.vendor)
-          ? button.classList.add('ios')
-          : button.classList.add('others');
-        button.style.display = 'inline-block';
+          ? shareButton.classList.add('ios')
+          : shareButton.classList.add('others');
+        shareButton.style.display = 'inline-block';
       }
-    }
-    if (!sender.tab) {
-      browser.scripting.executeScript(
-        {
-          target: { tabId: tab.id },
-          files: ['contentInject.js'],
-        },
-        () => {
-          browser.tabs.sendMessage(tab.id, {
-            type: 'store-results',
-            data: message.data,
-          });
-        },
-      );
     }
   });
 });
 
-// Race the background service worker against the cached result.
+// Request the results from the injected content script.
 browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-  browser.runtime.sendMessage(
-    { type: 'request-results', data: tab.url },
-    () => {
-      if (browser.runtime.lastError) {
-        return;
-      }
-    },
-  );
-
   // Ask the content script.
   browser.tabs.sendMessage(
     tab.id,

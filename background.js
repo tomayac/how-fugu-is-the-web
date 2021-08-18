@@ -3,9 +3,6 @@ self.browser = self.browser || self.chrome;
 
 importScripts(['patterns.js']);
 
-// The previously visited URL.
-let previousURL = '';
-
 // The response bodies of all resources requested by the page.
 let responseBodies = [];
 
@@ -40,40 +37,43 @@ const getMessages = async () => {
 };
 
 // Update the browser popup according to the detected APIs.
-const updatePopup = () => {
-  browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
-    // Reset the badge and the title for the current tab if no APIs are detected.
-    const length = detectedAPIs.size;
-    if (!length) {
+const updatePopup = (url) => {
+  browser.tabs.query({ url }, (tabs) => {
+    tabs.forEach(async (tab) => {
+      // Reset the badge and the title for the current tab if no APIs are detected.
+      const length = detectedAPIs.size;
+      if (!length) {
+        browser.action.setBadgeText({
+          text: '',
+          tabId: tab.id,
+        });
+        browser.action.setTitle({
+          title: '',
+          tabId: tab.id,
+        });
+        browser.action.disable({
+          tabId: tab.id,
+        });
+        return;
+      }
+      // Set the badge and the title in function of the detected APIs
+      // on the current page.
       browser.action.setBadgeText({
-        text: '',
+        text: String(length),
         tabId: tab.id,
       });
+      messages = messages || (await getMessages());
+      const apiOrAPIs =
+        length > 1 ? messages.apis.message : messages.api.message;
       browser.action.setTitle({
-        title: '',
+        title: messages.actionTitle.message
+          .replace('$LENGTH', length)
+          .replace('$API_OR_APIS', apiOrAPIs),
         tabId: tab.id,
       });
-      browser.action.disable({
+      browser.action.enable({
         tabId: tab.id,
       });
-      return;
-    }
-    // Set the badge and the title in function of the detected APIs
-    // on the current page.
-    browser.action.setBadgeText({
-      text: String(length),
-      tabId: tab.id,
-    });
-    messages = messages || (await getMessages());
-    const apiOrAPIs = length > 1 ? messages.apis.message : messages.api.message;
-    browser.action.setTitle({
-      title: messages.actionTitle.message
-        .replace('$LENGTH', length)
-        .replace('$API_OR_APIS', apiOrAPIs),
-      tabId: tab.id,
-    });
-    browser.action.enable({
-      tabId: tab.id,
     });
   });
 };
@@ -161,37 +161,11 @@ const detect = () => {
       }
     }
   });
-  if (detectedAPIs.size) {
-    console.log(detectedAPIs.entries());
-    updatePopup();
-  }
-};
-
-// If the URL has changed, reset everything to the empty state.
-const checkAndResetIfURLChanged = (url) => {
-  const currentURL = new URL(url.split('#')[0]).href;
-  if (currentURL !== previousURL) {
-    previousURL = currentURL;
-    responseBodies = [];
-    detectedAPIs.clear();
-    updatePopup();
-    return true;
-  }
-  return false;
 };
 
 // Track each main document, JavaScript, or Web App Manifest request.
 browser.webRequest.onBeforeRequest.addListener(
   (details) => {
-    console.log(details.type, details.url);
-    if (details.type === 'main_frame') {
-      if (!previousURL) {
-        previousURL = new URL(details.url.split('#')[0]).href;
-      }
-      if (checkAndResetIfURLChanged(details.url)) {
-        return;
-      }
-    }
     if (
       !responseBodies.find((responseBody) => details.url === responseBody.url)
     ) {
@@ -217,40 +191,48 @@ browser.webRequest.onBeforeRequest.addListener(
 
 // When the navigation has completed, detect if any of the tracked
 // requests looks like it contains a Fugu API.
-browser.webNavigation.onCompleted.addListener(detect);
+browser.webNavigation.onCompleted.addListener(({ url, tabId, frameId }) => {
+  // Navigation in a subframe is not relevant.
+  if (frameId > 0) {
+    return;
+  }
+  detect();
+  if (detectedAPIs.size) {
+    browser.tabs.query({ url }, (tabs) => {
+      tabs.forEach(async (tab) => {
+        browser.scripting.executeScript(
+          {
+            target: { tabId },
+            files: ['contentInject.js'],
+          },
+          () => {
+            browser.tabs.sendMessage(tab.id, {
+              type: 'store-results',
+              data: Object.fromEntries(detectedAPIs),
+            });
+          },
+        );
+        console.log(detectedAPIs.entries());
+        updatePopup(url);
+      });
+    });
+  }
+});
 
 // Upon each main frame navigation, check if the URL has changed, and if so,
 // reset everything to the empty state.
 browser.webNavigation.onBeforeNavigate.addListener(({ url, frameId }) => {
+  // Navigation in a subframe is not relevant.
   if (frameId > 0) {
     return;
   }
-  checkAndResetIfURLChanged(url);
+  reset();
 });
 
-// When the popup asks for results, deliver them, but only if the URLs match.
-browser.runtime.onMessage.addListener((message) => {
-  if (message.type === 'request-results') {
-    if (
-      detectedAPIs.size &&
-      previousURL === new URL(message.data.split('#')[0]).href
-    ) {
-      browser.runtime.sendMessage({
-        type: 'return-results',
-        data: Array.from(detectedAPIs.entries()),
-      });
-    }
-  }
-});
-
-// When the background service worker gets suspended, reset everything to the
-// empty state.
-browser.runtime.onSuspend.addListener(() => {
-  previousURL = '';
+const reset = () => {
   responseBodies = [];
   detectedAPIs.clear();
-  updatePopup();
-});
+};
 
 // Make sure the action is clickable when there are detected APIs.
 browser.tabs.onActivated.addListener(({ tabId }) => {
