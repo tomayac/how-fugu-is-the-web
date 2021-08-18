@@ -91,7 +91,7 @@ shareButton.addEventListener('click', async () => {
 
 …that uses ${numAPIs} Fugu API${numAPIs === 1 ? '' : 's'} 🐡!
 
-How Fugu 🐡 is the Web? Install the extension from ${CANONICAL} and share on #HowFuguIsTheWeb!`.trim();
+How Fugu 🐡 is the Web? Find out by installing the extension from ${CANONICAL} and share on #HowFuguIsTheWeb!`.trim();
       /* eslint-enable no-irregular-whitespace */
 
       const shareData = {

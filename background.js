@@ -143,6 +143,7 @@ const processMatches = (matches, key, value, har) => {
 const detect = () => {
   responseBodies.forEach((har) => {
     // For inline scripts, go through each script tag one by one.
+    console.log(har)
     if (har.type === 'main_frame') {
       let scriptMatches;
       const scriptRegEx = /\<script[^\>]*\>(.*?)<\/script>/gms;
@@ -166,6 +167,7 @@ const detect = () => {
 // Track each main document, JavaScript, or Web App Manifest request.
 browser.webRequest.onBeforeRequest.addListener(
   (details) => {
+    console.log(details)
     if (
       !responseBodies.find((responseBody) => details.url === responseBody.url)
     ) {
