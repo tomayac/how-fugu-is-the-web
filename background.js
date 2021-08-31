@@ -143,7 +143,6 @@ const processMatches = (matches, key, value, har) => {
 const detect = () => {
   responseBodies.forEach((har) => {
     // For inline scripts, go through each script tag one by one.
-    console.log(har)
     if (har.type === 'main_frame') {
       let scriptMatches;
       const scriptRegEx = /\<script[^\>]*\>(.*?)<\/script>/gms;
@@ -167,7 +166,6 @@ const detect = () => {
 // Track each main document, JavaScript, or Web App Manifest request.
 browser.webRequest.onBeforeRequest.addListener(
   (details) => {
-    console.log(details)
     if (
       !responseBodies.find((responseBody) => details.url === responseBody.url)
     ) {
@@ -179,6 +177,31 @@ browser.webRequest.onBeforeRequest.addListener(
             type: details.type,
             response_body: body,
           });
+        })
+        .then(() => {
+          detect();
+          if (detectedAPIs.size) {
+            const url = `${details.initiator}/`;
+            const tabId = details.tabId;
+            browser.tabs.query({ url }, (tabs) => {
+              tabs.forEach(async (tab) => {
+                browser.scripting.executeScript(
+                  {
+                    target: { tabId },
+                    files: ['contentInject.js'],
+                  },
+                  () => {
+                    browser.tabs.sendMessage(tab.id, {
+                      type: 'store-results',
+                      data: Object.fromEntries(detectedAPIs),
+                    });
+                  },
+                );
+                console.log(detectedAPIs.entries());
+                updatePopup(url);
+              });
+            });
+          }
         })
         .catch((err) => {
           console.error(err.name, err.message);
