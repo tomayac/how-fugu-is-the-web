@@ -136,7 +136,7 @@ const patterns = {
     blinkFeatureID: 2397,
   },
   'WebMIDI': {
-    regEx: /navigator\.requestMIDIAccess\s*\(\)/g,
+    regEx: /navigator\.requestMIDIAccess\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'requestMIDIAccess' in navigator)(),
     featureDetection: `(async () => 'requestMIDIAccess' in navigator)()`,
