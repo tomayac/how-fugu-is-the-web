@@ -630,4 +630,12 @@ export default {
     documentation: 'https://web.dev/url-protocol-handler/',
     blinkFeatureID: 3884,
   },
+  'Launch Handler': {
+    regEx: /"launch_handler"/g,
+    where: 'Web App Manifest',
+    supported: (async () => undefined)(),
+    featureDetection: `(async () => undefined)()`,
+    documentation: 'https://web.dev/launch-handler/',
+    blinkFeatureID: undefined,
+  },
 };
