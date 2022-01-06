@@ -182,12 +182,11 @@ browser.webRequest.onBeforeRequest.addListener(
           detect();
           if (detectedAPIs.size) {
             const url = `${details.initiator}/`;
-            const tabId = details.tabId;
             browser.tabs.query({ url }, (tabs) => {
               tabs.forEach(async (tab) => {
                 browser.scripting.executeScript(
                   {
-                    target: { tabId },
+                    target: { tabId: tab.id },
                     files: ['contentInject.js'],
                   },
                   () => {
@@ -197,7 +196,6 @@ browser.webRequest.onBeforeRequest.addListener(
                     });
                   },
                 );
-                console.log(detectedAPIs.entries());
                 updatePopup(url);
               });
             });

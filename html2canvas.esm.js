@@ -1,6 +1,6 @@
 /*!
- * html2canvas 1.3.3 <https://html2canvas.hertzen.com>
- * Copyright (c) 2021 Niklas von Hertzen <https://hertzen.com>
+ * html2canvas 1.4.0 <https://html2canvas.hertzen.com>
+ * Copyright (c) 2022 Niklas von Hertzen <https://hertzen.com>
  * Released under MIT License
  */
 /*! *****************************************************************************
@@ -107,7 +107,7 @@ var Bounds = /** @class */ (function () {
         return new Bounds(clientRect.left + context.windowBounds.left, clientRect.top + context.windowBounds.top, clientRect.width, clientRect.height);
     };
     Bounds.fromDOMRectList = function (context, domRectList) {
-        var domRect = domRectList[0];
+        var domRect = Array.from(domRectList).find(function (rect) { return rect.width !== 0; });
         return domRect
             ? new Bounds(domRect.x + context.windowBounds.left, domRect.y + context.windowBounds.top, domRect.width, domRect.height)
             : Bounds.EMPTY;
@@ -1308,7 +1308,7 @@ var Tokenizer = /** @class */ (function () {
         }
     };
     Tokenizer.prototype.consumeStringSlice = function (count) {
-        var SLICE_STACK_SIZE = 60000;
+        var SLICE_STACK_SIZE = 50000;
         var value = '';
         while (count > 0) {
             var amount = Math.min(SLICE_STACK_SIZE, count);
@@ -4334,6 +4334,12 @@ var FEATURES = {
         var value = 'withCredentials' in new XMLHttpRequest();
         Object.defineProperty(FEATURES, 'SUPPORT_CORS_XHR', { value: value });
         return value;
+    },
+    get SUPPORT_NATIVE_TEXT_SEGMENTATION() {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        var value = !!(typeof Intl !== 'undefined' && Intl.Segmenter);
+        Object.defineProperty(FEATURES, 'SUPPORT_NATIVE_TEXT_SEGMENTATION', { value: value });
+        return value;
     }
 };
 
@@ -4351,11 +4357,17 @@ var parseTextBounds = function (context, value, styles, node) {
     textList.forEach(function (text) {
         if (styles.textDecorationLine.length || text.trim().length > 0) {
             if (FEATURES.SUPPORT_RANGE_BOUNDS) {
-                if (!FEATURES.SUPPORT_WORD_BREAKING) {
-                    textBounds.push(new TextBounds(text, Bounds.fromDOMRectList(context, createRange(node, offset, text.length).getClientRects())));
+                var clientRects = createRange(node, offset, text.length).getClientRects();
+                if (clientRects.length > 1) {
+                    var subSegments = segmentGraphemes(text);
+                    var subOffset_1 = 0;
+                    subSegments.forEach(function (subSegment) {
+                        textBounds.push(new TextBounds(subSegment, Bounds.fromDOMRectList(context, createRange(node, subOffset_1 + offset, subSegment.length).getClientRects())));
+                        subOffset_1 += subSegment.length;
+                    });
                 }
                 else {
-                    textBounds.push(new TextBounds(text, getRangeBounds(context, node, offset, text.length)));
+                    textBounds.push(new TextBounds(text, Bounds.fromDOMRectList(context, clientRects)));
                 }
             }
             else {
@@ -4398,11 +4410,28 @@ var createRange = function (node, offset, length) {
     range.setEnd(node, offset + length);
     return range;
 };
-var getRangeBounds = function (context, node, offset, length) {
-    return Bounds.fromClientRect(context, createRange(node, offset, length).getBoundingClientRect());
+var segmentGraphemes = function (value) {
+    if (FEATURES.SUPPORT_NATIVE_TEXT_SEGMENTATION) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        var segmenter = new Intl.Segmenter(void 0, { granularity: 'grapheme' });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return Array.from(segmenter.segment(value)).map(function (segment) { return segment.segment; });
+    }
+    return splitGraphemes(value);
+};
+var segmentWords = function (value, styles) {
+    if (FEATURES.SUPPORT_NATIVE_TEXT_SEGMENTATION) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        var segmenter = new Intl.Segmenter(void 0, {
+            granularity: 'word'
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return Array.from(segmenter.segment(value)).map(function (segment) { return segment.segment; });
+    }
+    return breakWords(value, styles);
 };
 var breakText = function (value, styles) {
-    return styles.letterSpacing !== 0 ? splitGraphemes(value) : breakWords(value, styles);
+    return styles.letterSpacing !== 0 ? segmentGraphemes(value) : segmentWords(value, styles);
 };
 // https://drafts.csswg.org/css-text/#word-separator
 var wordSeparators = [0x0020, 0x00a0, 0x1361, 0x10100, 0x10101, 0x1039, 0x1091];
@@ -4769,6 +4798,8 @@ var isScriptElement = function (node) { return node.tagName === 'SCRIPT'; };
 var isTextareaElement = function (node) { return node.tagName === 'TEXTAREA'; };
 var isSelectElement = function (node) { return node.tagName === 'SELECT'; };
 var isSlotElement = function (node) { return node.tagName === 'SLOT'; };
+// https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name
+var isCustomElement = function (node) { return node.tagName.indexOf('-') > 0; };
 
 var CounterState = /** @class */ (function () {
     function CounterState() {
@@ -5149,7 +5180,7 @@ var DocumentCloner = /** @class */ (function () {
         if (!element.ownerDocument) {
             throw new Error('Cloned element does not have an owner document');
         }
-        this.documentElement = this.cloneNode(element.ownerDocument.documentElement);
+        this.documentElement = this.cloneNode(element.ownerDocument.documentElement, false);
     }
     DocumentCloner.prototype.toIFrame = function (ownerDocument, windowSize) {
         var _this = this;
@@ -5232,6 +5263,14 @@ var DocumentCloner = /** @class */ (function () {
                 clone.loading = 'eager';
             }
         }
+        if (isCustomElement(clone)) {
+            return this.createCustomElementClone(clone);
+        }
+        return clone;
+    };
+    DocumentCloner.prototype.createCustomElementClone = function (node) {
+        var clone = document.createElement('html2canvascustomelement');
+        copyCSSStyles(node.style, clone);
         return clone;
     };
     DocumentCloner.prototype.createStyleClone = function (node) {
@@ -5298,7 +5337,18 @@ var DocumentCloner = /** @class */ (function () {
         }
         return clonedCanvas;
     };
-    DocumentCloner.prototype.cloneNode = function (node) {
+    DocumentCloner.prototype.appendChildNode = function (clone, child, copyStyles) {
+        if (!isElementNode(child) ||
+            (!isScriptElement(child) &&
+                !child.hasAttribute(IGNORE_ATTRIBUTE) &&
+                (typeof this.options.ignoreElements !== 'function' || !this.options.ignoreElements(child)))) {
+            if (!this.options.copyStyles || !isElementNode(child) || !isStyleElement(child)) {
+                clone.appendChild(this.cloneNode(child, copyStyles));
+            }
+        }
+    };
+    DocumentCloner.prototype.cloneNode = function (node, copyStyles) {
+        var _this = this;
         if (isTextNode(node)) {
             return document.createTextNode(node.data);
         }
@@ -5307,48 +5357,53 @@ var DocumentCloner = /** @class */ (function () {
         }
         var window = node.ownerDocument.defaultView;
         if (window && isElementNode(node) && (isHTMLElementNode(node) || isSVGElementNode(node))) {
-            var clone = this.createElementClone(node);
-            clone.style.transitionProperty = 'none';
+            var clone_1 = this.createElementClone(node);
+            clone_1.style.transitionProperty = 'none';
             var style = window.getComputedStyle(node);
             var styleBefore = window.getComputedStyle(node, ':before');
             var styleAfter = window.getComputedStyle(node, ':after');
-            if (this.referenceElement === node && isHTMLElementNode(clone)) {
-                this.clonedReferenceElement = clone;
+            if (this.referenceElement === node && isHTMLElementNode(clone_1)) {
+                this.clonedReferenceElement = clone_1;
             }
-            if (isBodyElement(clone)) {
-                createPseudoHideStyles(clone);
+            if (isBodyElement(clone_1)) {
+                createPseudoHideStyles(clone_1);
             }
             var counters = this.counters.parse(new CSSParsedCounterDeclaration(this.context, style));
-            var before = this.resolvePseudoContent(node, clone, styleBefore, PseudoElementType.BEFORE);
-            for (var child = node.firstChild; child; child = child.nextSibling) {
-                if (!isElementNode(child) ||
-                    (!isScriptElement(child) &&
-                        !child.hasAttribute(IGNORE_ATTRIBUTE) &&
-                        (typeof this.options.ignoreElements !== 'function' || !this.options.ignoreElements(child)))) {
-                    if (!this.options.copyStyles || !isElementNode(child) || !isStyleElement(child)) {
-                        clone.appendChild(this.cloneNode(child));
+            var before = this.resolvePseudoContent(node, clone_1, styleBefore, PseudoElementType.BEFORE);
+            if (isCustomElement(node)) {
+                copyStyles = true;
+            }
+            for (var child = node.shadowRoot ? node.shadowRoot.firstChild : node.firstChild; child; child = child.nextSibling) {
+                if (isElementNode(child) && isSlotElement(child) && typeof child.assignedNodes === 'function') {
+                    var assignedNodes = child.assignedNodes();
+                    if (assignedNodes.length) {
+                        assignedNodes.forEach(function (assignedNode) { return _this.appendChildNode(clone_1, assignedNode, copyStyles); });
                     }
+                }
+                else {
+                    this.appendChildNode(clone_1, child, copyStyles);
                 }
             }
             if (before) {
-                clone.insertBefore(before, clone.firstChild);
+                clone_1.insertBefore(before, clone_1.firstChild);
             }
-            var after = this.resolvePseudoContent(node, clone, styleAfter, PseudoElementType.AFTER);
+            var after = this.resolvePseudoContent(node, clone_1, styleAfter, PseudoElementType.AFTER);
             if (after) {
-                clone.appendChild(after);
+                clone_1.appendChild(after);
             }
             this.counters.pop(counters);
-            if (style && (this.options.copyStyles || isSVGElementNode(node)) && !isIFrameElement(node)) {
-                copyCSSStyles(style, clone);
+            if ((style && (this.options.copyStyles || isSVGElementNode(node)) && !isIFrameElement(node)) ||
+                copyStyles) {
+                copyCSSStyles(style, clone_1);
             }
             if (node.scrollTop !== 0 || node.scrollLeft !== 0) {
-                this.scrolledElements.push([clone, node.scrollLeft, node.scrollTop]);
+                this.scrolledElements.push([clone_1, node.scrollLeft, node.scrollTop]);
             }
             if ((isTextareaElement(node) || isSelectElement(node)) &&
-                (isTextareaElement(clone) || isSelectElement(clone))) {
-                clone.value = node.value;
+                (isTextareaElement(clone_1) || isSelectElement(clone_1))) {
+                clone_1.value = node.value;
             }
-            return clone;
+            return clone_1;
         }
         return node.cloneNode(false);
     };
@@ -6591,7 +6646,7 @@ var CanvasRenderer = /** @class */ (function (_super) {
             this.ctx.fillText(text.text, text.bounds.left, text.bounds.top + baseline);
         }
         else {
-            var letters = splitGraphemes(text.text);
+            var letters = segmentGraphemes(text.text);
             letters.reduce(function (left, letter) {
                 _this.ctx.fillText(letter, left, text.bounds.top + baseline);
                 return left + _this.ctx.measureText(letter).width;
@@ -6602,7 +6657,7 @@ var CanvasRenderer = /** @class */ (function (_super) {
         var fontVariant = styles.fontVariant
             .filter(function (variant) { return variant === 'normal' || variant === 'small-caps'; })
             .join('');
-        var fontFamily = styles.fontFamily.join(', ');
+        var fontFamily = fixIOSSystemFonts(styles.fontFamily).join(', ');
         var fontSize = isDimensionToken(styles.fontSize)
             ? "" + styles.fontSize.number + styles.fontSize.unit
             : styles.fontSize.number + "px";
@@ -7437,6 +7492,13 @@ var canvasTextAlign = function (textAlign) {
         default:
             return 'left';
     }
+};
+// see https://github.com/niklasvh/html2canvas/pull/2645
+var iOSBrokenFonts = ['-apple-system', 'system-ui'];
+var fixIOSSystemFonts = function (fontFamilies) {
+    return /iPhone OS 15_(0|1)/.test(window.navigator.userAgent)
+        ? fontFamilies.filter(function (fontFamily) { return iOSBrokenFonts.indexOf(fontFamily) === -1; })
+        : fontFamilies;
 };
 
 var ForeignObjectRenderer = /** @class */ (function (_super) {

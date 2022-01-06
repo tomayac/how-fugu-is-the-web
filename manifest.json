@@ -7,15 +7,8 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [
-    "activeTab",
-    "webRequest",
-    "webNavigation",
-    "scripting"
-  ],
-  "host_permissions": [
-    "https://*/*"
-  ],
+  "permissions": ["activeTab", "webRequest", "webNavigation", "scripting"],
+  "host_permissions": ["https://*/*"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
