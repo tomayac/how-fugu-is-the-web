@@ -1,6 +1,6 @@
 {
   "name": "project-fugu-api-detector",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "The Project Fugu 🐡 API Detector extension provides insights into the advanced Web APIs used by websites.",
   "scripts": {
     "fix": "npx prettier . --write",
@@ -15,7 +15,7 @@
   "devDependencies": {
     "fugu-api-data": "^1.8.0",
     "html2canvas": "^1.4.1",
-    "prettier": "^2.5.1",
+    "prettier": "^2.6.2",
     "shx": "^0.3.4"
   }
 }

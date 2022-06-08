@@ -181,7 +181,7 @@ browser.webRequest.onBeforeRequest.addListener(
         .then(() => {
           detect();
           if (detectedAPIs.size) {
-            const url = `${details.initiator}/`;
+            const url = `${details.initiator || details.url}/`;
             browser.tabs.query({ url }, (tabs) => {
               tabs.forEach(async (tab) => {
                 browser.scripting.executeScript(
