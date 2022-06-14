@@ -558,6 +558,17 @@ export default {
       'https://github.com/w3c/device-posture/blob/gh-pages/README.md',
     blinkFeatureID: undefined,
   },
+  'Insertable streams for MediaStreamTrack': {
+    regEx: /MediaStreamTrackProcessor\s*\(/g,
+    where: 'JavaScript',
+    supported: (async () =>
+      'MediaStreamTrackProcessor' in self &&
+      'MediaStreamTrackGenerator' in self)(),
+    featureDetection: `(async () => 'MediaStreamTrackProcessor' in self && 'MediaStreamTrackGenerator' in self)()`,
+    documentation:
+      'https://web.dev/mediastreamtrack-insertable-media-processing/',
+    blinkFeatureID: 3729,
+  },
   'Ink': {
     regEx: /navigator\.ink\.requestPresenter\s*\(/g,
     where: 'JavaScript',
