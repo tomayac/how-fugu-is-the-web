@@ -17,7 +17,7 @@ export default {
       'https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage',
     blinkFeatureID: 3022,
   },
-  Push: {
+  'Push': {
     regEx: /\.pushManager\.subscribe\s*\(/g,
     where: 'JavaScript',
     supported: (async () =>
@@ -28,7 +28,7 @@ export default {
     documentation: 'https://developer.mozilla.org/en-US/docs/Web/API/Push_API',
     blinkFeatureID: 769,
   },
-  HapticsDevice: {
+  'HapticsDevice': {
     regEx: /\.haptics\.play\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'HapticsDevice' in self)(),
@@ -144,7 +144,7 @@ export default {
     documentation: 'https://web.dev/registering-a-web-based-payment-app/',
     blinkFeatureID: 2397,
   },
-  WebMIDI: {
+  'WebMIDI': {
     regEx: /navigator\.requestMIDIAccess\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'requestMIDIAccess' in navigator)(),
@@ -153,7 +153,7 @@ export default {
       'https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API',
     blinkFeatureID: 2029,
   },
-  WebBluetooth: {
+  'WebBluetooth': {
     regEx: /navigator\.bluetooth\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'bluetooth' in navigator)(),
@@ -161,7 +161,7 @@ export default {
     documentation: 'https://web.dev/bluetooth/',
     blinkFeatureID: 1670,
   },
-  WebUSB: {
+  'WebUSB': {
     regEx: /navigator\.usb\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'usb' in navigator)(),
@@ -211,7 +211,7 @@ export default {
     documentation: 'https://web.dev/contact-picker/',
     blinkFeatureID: 2993,
   },
-  getInstalledRelatedApps: {
+  'getInstalledRelatedApps': {
     regEx: /navigator\.getInstalledRelatedApps\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getInstalledRelatedApps' in navigator)(),
@@ -235,7 +235,7 @@ export default {
     documentation: 'https://web.dev/periodic-background-sync/',
     blinkFeatureID: 2931,
   },
-  Badging: {
+  'Badging': {
     regEx: /navigator\.setAppBadge\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'setAppBadge' in navigator)(),
@@ -295,7 +295,7 @@ export default {
       'https://developers.google.com/web/updates/2016/04/credential-management-api',
     blinkFeatureID: 960,
   },
-  WebOTP: {
+  'WebOTP': {
     regEx: /transport\s*\:\s*\[["']sms["']\]/g,
     where: 'JavaScript',
     supported: (async () => 'OTPCredential' in self)(),
@@ -329,7 +329,7 @@ export default {
     documentation: 'https://web.dev/disable-mouse-acceleration/',
     blinkFeatureID: 3027,
   },
-  WebHID: {
+  'WebHID': {
     regEx: /navigator\.hid\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'hid' in navigator)(),
@@ -337,7 +337,7 @@ export default {
     documentation: 'https://web.dev/hid/',
     blinkFeatureID: 2866,
   },
-  WebSerial: {
+  'WebSerial': {
     regEx: /navigator\.serial\.requestPort\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'serial' in navigator)(),
@@ -345,7 +345,7 @@ export default {
     documentation: 'https://web.dev/serial/',
     blinkFeatureID: 2546,
   },
-  WebNFC: {
+  'WebNFC': {
     regEx: /new\s+NDEFReader\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'NDEFReader' in self)(),
@@ -353,16 +353,7 @@ export default {
     documentation: 'https://web.dev/nfc/',
     blinkFeatureID: 3094,
   },
-  'Run On Login': {
-    regEx: /navigator\.runOnOsLogin\.set\s*\(/g,
-    where: 'JavaScript',
-    supported: (async () => 'runOnOsLogin' in navigator)(),
-    featureDetection: `(async () => 'runOnOsLogin' in navigator)()`,
-    documentation:
-      'https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/RunOnLogin/Explainer.md',
-    blinkFeatureID: undefined,
-  },
-  WebCodecs: {
+  'WebCodecs': {
     regEx: /new\s+MediaStreamTrackProcessor\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'MediaStreamTrackProcessor' in self)(),
@@ -387,14 +378,6 @@ export default {
     documentation: 'https://web.dev/idle-detection/',
     blinkFeatureID: 2834,
   },
-  'Storage Foundation': {
-    regEx: /storageFoundation\.open\s*\(/g,
-    where: 'JavaScript',
-    supported: (async () => 'storageFoundation' in self)(),
-    featureDetection: `(async () => 'storageFoundation' in self)()`,
-    documentation: 'https://web.dev/storage-foundation/',
-    blinkFeatureID: 3822,
-  },
   'Handwriting Recognition': {
     regEx: /navigator\.queryHandwritingRecognizerSupport\s*\(/g,
     where: 'JavaScript',
@@ -411,7 +394,7 @@ export default {
     documentation: 'https://web.dev/compute-pressure/',
     blinkFeatureID: 3899,
   },
-  Accelerometer: {
+  'Accelerometer': {
     regEx: /new\s+Accelerometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Accelerometer' in self)(),
@@ -419,7 +402,7 @@ export default {
     documentation: 'https://web.dev/generic-sensor/',
     blinkFeatureID: 1899,
   },
-  Gyroscope: {
+  'Gyroscope': {
     regEx: /new\s+Gyroscope\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Gyroscope' in self)(),
@@ -459,7 +442,7 @@ export default {
     documentation: 'https://web.dev/generic-sensor/',
     blinkFeatureID: 2051,
   },
-  Magnetometer: {
+  'Magnetometer': {
     regEx: /new\s+Magnetometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Magnetometer' in self)(),
@@ -475,22 +458,13 @@ export default {
     documentation: 'https://web.dev/generic-sensor/',
     blinkFeatureID: 1901,
   },
-  'Notification Triggers': {
-    regEx: /showTrigger\s*\:\s*new\s+TimestampTrigger\s*\(/g,
-    where: 'JavaScript',
-    supported: (async () =>
-      'Notification' in self && 'showTrigger' in Notification.prototype)(),
-    featureDetection: `(async () => 'Notification' in self && 'showTrigger' in Notification.prototype)()`,
-    documentation: 'https://web.dev/notification-triggers/',
-    blinkFeatureID: 3017,
-  },
   'Local Font Access': {
-    regEx: /navigator\.fonts\.query\s*\(\)/g,
+    regEx: /queryLocalFonts\s*\(/g,
     where: 'JavaScript',
-    supported: (async () => 'fonts' in navigator)(),
-    featureDetection: `(async () => 'fonts' in navigator)()`,
+    supported: (async () => 'queryLocalFonts' in self)(),
+    featureDetection: `(async () => 'queryLocalFonts' in self)()`,
     documentation: 'https://web.dev/local-fonts/',
-    blinkFeatureID: 3386,
+    blinkFeatureID: 4211,
   },
   'Multi-Screen Window Placement': {
     regEx: /getScreens\s*\(\)/g,
@@ -500,7 +474,7 @@ export default {
     documentation: 'https://web.dev/multi-screen-window-placement/',
     blinkFeatureID: 3388,
   },
-  WebSocketStream: {
+  'WebSocketStream': {
     regEx: /new\s+WebSocketStream\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebSocketStream' in self)(),
@@ -508,7 +482,7 @@ export default {
     documentation: 'https://web.dev/websocketstream/',
     blinkFeatureID: 3018,
   },
-  WebTransport: {
+  'WebTransport': {
     regEx: /new\s+WebTransport\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebTransport' in self)(),
@@ -516,7 +490,7 @@ export default {
     documentation: 'https://web.dev/webtransport/',
     blinkFeatureID: 3472,
   },
-  Gamepad: {
+  'Gamepad': {
     regEx: /navigator\.getGamepads\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getGamepads' in navigator)(),
@@ -524,7 +498,7 @@ export default {
     documentation: 'https://web.dev/gamepad/',
     blinkFeatureID: 1916,
   },
-  WebGPU: {
+  'WebGPU': {
     regEx: /navigator\.gpu\.requestAdapter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'gpu' in navigator)(),
@@ -532,7 +506,7 @@ export default {
     documentation: 'https://web.dev/webgpu',
     blinkFeatureID: 3888,
   },
-  VirtualKeyboard: {
+  'VirtualKeyboard': {
     regEx: /navigator\.virtualKeyboard/g,
     where: 'JavaScript',
     supported: (async () => 'virtualKeyboard' in navigator)(),
@@ -541,7 +515,7 @@ export default {
       'https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/VirtualKeyboardAPI/explainer.md',
     blinkFeatureID: undefined,
   },
-  EyeDropper: {
+  'EyeDropper': {
     regEx: /new\s+EyeDropper\s*\(\)/g,
     where: 'JavaScript',
     supported: (async () => 'EyeDropper' in self)(),
@@ -569,7 +543,7 @@ export default {
       'https://web.dev/mediastreamtrack-insertable-media-processing/',
     blinkFeatureID: 3729,
   },
-  Ink: {
+  'Ink': {
     regEx: /navigator\.ink\.requestPresenter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'ink' in navigator)(),
@@ -602,21 +576,13 @@ export default {
     documentation: 'https://web.dev/web-share-target/',
     blinkFeatureID: undefined,
   },
-  Shortcuts: {
+  'Shortcuts': {
     regEx: /"shortcuts"/g,
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
     featureDetection: `(async () => undefined)()`,
     documentation: 'https://web.dev/app-shortcuts/',
     blinkFeatureID: undefined,
-  },
-  'Declarative Link Capturing': {
-    regEx: /"capture_links"/g,
-    where: 'Web App Manifest',
-    supported: (async () => undefined)(),
-    featureDetection: `(async () => undefined)()`,
-    documentation: 'https://web.dev/declarative-link-capturing/',
-    blinkFeatureID: 3813,
   },
   'Tabbed Application Mode': {
     regEx: /"tabbed"/g,
@@ -625,14 +591,6 @@ export default {
     featureDetection: `(async () => undefined)()`,
     documentation: 'https://web.dev/tabbed-application-mode/',
     blinkFeatureID: undefined,
-  },
-  'URL Handlers': {
-    regEx: /"url_handlers"/g,
-    where: 'Web App Manifest',
-    supported: (async () => undefined)(),
-    featureDetection: `(async () => undefined)()`,
-    documentation: 'https://web.dev/pwa-url-handler/',
-    blinkFeatureID: 3851,
   },
   'Protocol Handlers': {
     regEx: /"protocol_handlers"/g,
@@ -658,6 +616,15 @@ export default {
       'launchQueue' in self && 'targetURL' in LaunchParams.prototype)(),
     featureDetection: `(async () => 'launchQueue' in self && 'targetURL' in LaunchParams.prototype)()`,
     documentation: 'https://web.dev/launch-handler/',
+    blinkFeatureID: undefined,
+  },
+  'Web App Link Handling': {
+    regEx: /"handle_links"/g,
+    where: 'Web App Manifest',
+    supported: (async () => undefined)(),
+    featureDetection: `(async () => undefined)()`,
+    documentation:
+      'https://github.com/WICG/pwa-url-handler/blob/main/handle_links/explainer.md',
     blinkFeatureID: undefined,
   },
 };
