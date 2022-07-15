@@ -104,12 +104,9 @@ const processMatches = (matches, key, value, har) => {
         detectedAPIs.set(
           key,
           detectedAPIs.get(key).concat({
-            href:
-              har.type === 'main_frame'
-                ? `${browser.runtime.getURL(
-                    'view-source.html',
-                  )}?code=${encodeURIComponent(har.response_body)}`
-                : har.url,
+            href: `${browser.runtime.getURL(
+              'view-source.html',
+            )}?code=${encodeURIComponent(har.response_body)}`,
             url: har.url,
             featureDetection: value.featureDetection,
             matchingText: matches[0],
@@ -121,12 +118,9 @@ const processMatches = (matches, key, value, har) => {
       if (checkURLConditions(value.where, har.type)) {
         detectedAPIs.set(key, [
           {
-            href:
-              har.type === 'main_frame'
-                ? `${browser.runtime.getURL(
-                    'view-source.html',
-                  )}?code=${encodeURIComponent(har.response_body)}`
-                : har.url,
+            href: `${browser.runtime.getURL(
+              'view-source.html',
+            )}?code=${encodeURIComponent(har.response_body)}`,
             url: har.url,
             featureDetection: value.featureDetection,
             matchingText: matches[0],

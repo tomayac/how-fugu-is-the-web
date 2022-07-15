@@ -45,11 +45,10 @@ The support categories are listed below:
 ### Deep-linking
 
 The extension makes use of [Text Fragment URLs](https://web.dev/text-fragments/)
-to deep-link to the occurrence of a detected API, for example
-[`https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge(`](https://airhorner.com/scripts/main.min.js#:~:text=navigator.setAppBadge%28).
-For main frame documents, the source code gets rendered in a helper HTML page
-controlled by the extension, since it is impossible to link to `view-source:`
-protocol links.
+to deep-link to the occurrence of a detected API. The source code gets rendered
+in a helper HTML page controlled by the extension, since it is impossible to
+directly link to `view-source:` protocol links and non-document resources with
+Text Fragment URLs.
 
 ## Limitations
 
