@@ -8,7 +8,7 @@ const CANONICAL = 'https://goo.gle/how-fugu-is-the-web';
 
 // DOM references.
 const ul = document.querySelector('ul');
-const div = document.body.querySelector('div');
+const div = document.body.querySelector('#dynamic');
 const shareButton = document.querySelector('#share');
 const downloadButton = document.querySelector('#download');
 const footer = document.querySelector('footer');
@@ -183,10 +183,10 @@ browser.runtime.onMessage.addListener((message, sender) => {
       displayMessage(message, tab);
       blob = await createScreenshot(tab.url);
       div.hidden = false;
+      /Apple/.test(navigator.vendor)
+        ? shareButton.classList.add('ios')
+        : shareButton.classList.add('others');
       if ('share' in navigator) {
-        /Apple/.test(navigator.vendor)
-          ? shareButton.classList.add('ios')
-          : shareButton.classList.add('others');
         downloadButton.style.display = 'none';
       } else {
         downloadButton.style.display = 'inline-block';

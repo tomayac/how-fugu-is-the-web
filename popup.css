@@ -65,7 +65,8 @@ button {
   -moz-appearance: none;
   appearance: none;
   background-repeat: no-repeat;
-  width: 8rem;
+  min-width: 7rem;
+  padding-inline-start: 42px;
 }
 
 button:hover {
@@ -123,6 +124,10 @@ a:active {
   list-style: square;
   padding-inline-start: 1.25rem;
   margin-block-end: 0.5rem;
+}
+
+#download {
+  background-image: url(./assets/screenshot.svg);
 }
 
 .ios {
