@@ -5,6 +5,7 @@
   },
   "detectedAPIs": { "message": "Detected Project Fugu APIs:" },
   "share": { "message": "Share" },
+  "download": { "message": "Screenshot" },
   "madeBy": { "message": "Made by" },
   "sourceCode": { "message": "Source code on" },
   "supported": { "message": "Supported by your browser." },

@@ -8,15 +8,18 @@ const CANONICAL = 'https://goo.gle/how-fugu-is-the-web';
 
 // DOM references.
 const ul = document.querySelector('ul');
-const shareButton = document.querySelector('button');
+const div = document.body.querySelector('div');
+const shareButton = document.querySelector('#share');
+const downloadButton = document.querySelector('#download');
 const footer = document.querySelector('footer');
 const heading = document.querySelector('h1');
+const ol = document.querySelector('ol');
 const body = document.body;
 
 // This needs to be prepared before the share button is clicked,
 // else, the user gesture would be consumed by the time the PNG
 // image can be created.
-let dataURL;
+let blob;
 
 // Translated strings.
 document.title = browser.i18n.getMessage('extName');
@@ -26,6 +29,7 @@ document.querySelector('#made-by').textContent =
 document.querySelector('#source-code').textContent =
   browser.i18n.getMessage('sourceCode');
 shareButton.textContent = browser.i18n.getMessage('share');
+downloadButton.textContent = browser.i18n.getMessage('download');
 const footerHTML = footer.innerHTML;
 const headingHTML = heading.innerHTML;
 
@@ -84,33 +88,59 @@ shareButton.addEventListener('click', async () => {
     const url = tab.url;
     browser.action.getBadgeText({ tabId: tab.id }, async (text) => {
       const numAPIs = Number(text);
-      /* eslint-disable no-irregular-whitespace */
-      const message = `🙋 I just found an app…
+      const message = `🙋 I just found an app…
 
-👉 ${url} 👈
+👉 ${url} 👈
 
-…that uses ${numAPIs} Fugu API${numAPIs === 1 ? '' : 's'} 🐡!
+…that uses ${numAPIs} Fugu 🐡 API${numAPIs === 1 ? '' : 's'}!
 
-How Fugu 🐡 is the Web? Find out by installing the extension from ${CANONICAL} and share on #HowFuguIsTheWeb!`.trim();
-      /* eslint-enable no-irregular-whitespace */
+How Fugu 🐡 is the Web? Find out by installing the extension from ${CANONICAL} and share on #HowFuguIsTheWeb!`.trim();
 
-      const shareData = {
-        text: message,
-        title: '',
-        dataURL,
-      };
-      browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-        browser.tabs.sendMessage(
-          tab.id,
-          { type: 'share-results', data: shareData },
-          () => {
-            if (browser.runtime.lastError) {
-              return;
+      if ('share' in navigator) {
+        const shareData = {
+          text: message,
+          title: '',
+          blob,
+        };
+        // The fallback when rich sharing isn't available.
+        const shareTextOnly = async (shareData) => {
+          delete shareData.blob;
+          try {
+            await navigator.share?.(shareData);
+          } catch (err) {
+            if (err.name !== 'AbortError') {
+              console.error(err.name, err.message);
             }
-          },
-        );
-        window.close();
-      });
+          }
+        };
+        // Try rich sharing first.
+        const share = async (shareData) => {
+          if (!navigator.canShare?.(shareData)) {
+            return shareTextOnly(shareData);
+          }
+          try {
+            await navigator.share?.(shareData);
+          } catch (err) {
+            if (err.name !== 'AbortError') {
+              console.error(err.name, err.message);
+              delete shareData.files;
+              shareTextOnly(shareData);
+            }
+          }
+        };
+
+        const files = [
+          new File([blob], 'how-fugu-is-the-web.png', { type: blob.type }),
+        ];
+        shareData.files = files;
+        share(shareData);
+      } else {
+        const shareURL = new URL('https://twitter.com/intent/tweet');
+        const params = new URLSearchParams();
+        params.append('text', message);
+        shareURL.search = params;
+        window.open(shareURL, '_blank', 'popup,noreferrer,noopener');
+      }
     });
   });
 });
@@ -142,7 +172,8 @@ const createScreenshot = async (url) => {
   });
   footer.innerHTML = footerHTML;
   heading.innerHTML = headingHTML;
-  return canvas.toDataURL();
+  blob = await fetch(canvas.toDataURL()).then((r) => r.blob());
+  return blob;
 };
 
 // Receives messages from the content script.
@@ -150,13 +181,32 @@ browser.runtime.onMessage.addListener((message, sender) => {
   browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
     if (message.type === 'return-results') {
       displayMessage(message, tab);
+      blob = await createScreenshot(tab.url);
+      div.hidden = false;
       if ('share' in navigator) {
-        dataURL = await createScreenshot(tab.url);
         /Apple/.test(navigator.vendor)
           ? shareButton.classList.add('ios')
           : shareButton.classList.add('others');
-        shareButton.style.display = 'inline-block';
+        downloadButton.style.display = 'none';
+      } else {
+        downloadButton.style.display = 'inline-block';
+        ol.style.visibility = 'visible';
+        // Fallback to use Twitter's Web Intent URL, as outlined in
+        // https://web.dev/patterns/advanced-apps/share/.
+        downloadButton.addEventListener('click', () => {
+          const a = document.createElement('a');
+          a.download = 'how-fugu-is-the-web.png';
+          a.style.display = 'none';
+          a.href = URL.createObjectURL(blob);
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.remove(a);
+            URL.revokeObjectURL(a.href);
+          }, 30 * 1000);
+        });
       }
+      shareButton.style.display = 'inline-block';
     }
   });
 });

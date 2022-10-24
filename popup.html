@@ -7,8 +7,12 @@
     <base target="_blank" />
   </head>
   <body>
-    <div>
+    <div hidden>
       <h1></h1>
+      <ol>
+        <li>Click <strong>Screenshot</strong> to download the results.</li>
+        <li>Click <strong>Share</strong> and attach the screenshot.</li>
+      </ol>
       <div class="wrapper">
         <img
           src="./assets/blowfish.png"
@@ -16,7 +20,8 @@
           height="64"
           alt="A blowfish, the Project Fugu logo."
         />
-        <button type="button"></button>
+        <button id="download" type="button"></button>
+        <button id="share" type="button"></button>
       </div>
       <main>
         <ul class="parent"></ul>

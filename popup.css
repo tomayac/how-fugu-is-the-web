@@ -40,6 +40,10 @@ h2 {
   margin-block-end: 0.25rem;
 }
 
+ol {
+  visibility: hidden;
+}
+
 button {
   display: none;
   border: none;

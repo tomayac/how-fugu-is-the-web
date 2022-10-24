@@ -15,46 +15,6 @@ if (typeof lastMessage === 'undefined') {
         type: 'return-results',
         data: lastMessage,
       });
-    } else if (message.type === 'share-results') {
-      // The fallback when rich sharing isn't available.
-      const shareTextOnly = async (shareData) => {
-        try {
-          await navigator.share?.(shareData);
-        } catch (err) {
-          if (err.name !== 'AbortError') {
-            console.error(err.name, err.message);
-          }
-        }
-      };
-      // Try rich sharing first.
-      const share = async (shareData) => {
-        const actuallyShare = async () => {
-          document.removeEventListener('pointermove', actuallyShare);
-          if (!navigator.canShare?.(shareData)) {
-            return shareTextOnly(shareData);
-          }
-          try {
-            await navigator.share?.(shareData);
-          } catch (err) {
-            if (err.name !== 'AbortError') {
-              console.error(err.name, err.message);
-              delete shareData.files;
-              shareTextOnly(shareData);
-            }
-          }
-        };
-        window.focus();
-        document.addEventListener('pointermove', actuallyShare);
-      };
-
-      const shareData = message.data;
-      const blob = await fetch(shareData.dataURL).then((r) => r.blob());
-      const files = [
-        new File([blob], 'howfuguismybrowser.png', { type: blob.type }),
-      ];
-      shareData.files = files;
-      delete shareData.dataURL;
-      share(shareData);
     }
   });
 }
