@@ -373,16 +373,18 @@ export default {
     regEx: /unadjustedMovement\s*\:\s*/g,
     where: 'JavaScript',
     supported: (async () =>
-      await (async () => {
-        try {
-          return !!(await document
-            .createElement('p')
-            .requestPointerLock({ unadjustedMovement: true }));
-        } catch {
-          return 'requestPointerLock' in HTMLParagraphElement.prototype;
-        }
-      })())(),
-    featureDetection: `(async () => await (async () => { try { return !!await document.createElement("p").requestPointerLock({ unadjustedMovement: true }) } catch { return 'requestPointerLock' in HTMLParagraphElement.prototype } })())()`,
+      'HTMLParagraphElement' in self
+        ? await (async () => {
+            try {
+              return !!(await document
+                .createElement('p')
+                .requestPointerLock({ unadjustedMovement: true }));
+            } catch {
+              return 'requestPointerLock' in HTMLParagraphElement.prototype;
+            }
+          })()
+        : undefined)(),
+    featureDetection: `(async () => 'HTMLParagraphElement' in self ? await (async () => { try { return !!await document.createElement("p").requestPointerLock({ unadjustedMovement: true }) } catch { return 'requestPointerLock' in HTMLParagraphElement.prototype } })() : undefined)()`,
     documentation: 'https://web.dev/disable-mouse-acceleration/',
     blinkFeatureID: 3027,
   },

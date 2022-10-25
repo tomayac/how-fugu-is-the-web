@@ -156,6 +156,10 @@ const createScreenshot = async (url) => {
   body.style.color = mainColor;
   body.style.backgroundColor = mainBackgroundColor;
   body.querySelectorAll('a').forEach((a) => (a.style.color = linkColor));
+  body.querySelectorAll('button').forEach((button) => {
+    button.dataset.display = button.style.display;
+    button.style.display = 'none';
+  });
   const link = footer.querySelector('a:nth-of-type(2)');
   link.textContent = CANONICAL;
   link.href = CANONICAL;
@@ -172,6 +176,9 @@ const createScreenshot = async (url) => {
   });
   footer.innerHTML = footerHTML;
   heading.innerHTML = headingHTML;
+  body.querySelectorAll('button').forEach((button) => {
+    button.style.display = button.dataset.display;
+  });
   blob = await fetch(canvas.toDataURL()).then((r) => r.blob());
   return blob;
 };
