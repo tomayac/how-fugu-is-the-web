@@ -71,9 +71,13 @@ const updatePopup = (url) => {
           .replace('$API_OR_APIS', apiOrAPIs),
         tabId: tab.id,
       });
-      browser.action.enable({
-        tabId: tab.id,
-      });
+      try {
+        browser.action.enable({
+          tabId: tab.id,
+        });
+      } catch {
+        // Do nothing.
+      }
     });
   });
 };
@@ -106,7 +110,7 @@ const processMatches = (matches, key, value, har) => {
           detectedAPIs.get(key).concat({
             href: `${browser.runtime.getURL(
               'view-source.html',
-            )}?code=${encodeURIComponent(har.response_body)}`,
+            )}?code=${encodeURIComponent(har.url)}`,
             url: har.url,
             featureDetection: value.featureDetection,
             matchingText: matches[0],
@@ -120,7 +124,7 @@ const processMatches = (matches, key, value, har) => {
           {
             href: `${browser.runtime.getURL(
               'view-source.html',
-            )}?code=${encodeURIComponent(har.response_body)}`,
+            )}?code=${encodeURIComponent(har.url)}`,
             url: har.url,
             featureDetection: value.featureDetection,
             matchingText: matches[0],
@@ -177,7 +181,7 @@ browser.webRequest.onBeforeRequest.addListener(
           if (detectedAPIs.size) {
             const url = `${details.initiator || details.url}/`;
             browser.tabs.query({ url }, (tabs) => {
-              tabs.forEach(async (tab) => {
+              tabs.forEach((tab) => {
                 browser.scripting.executeScript(
                   {
                     target: { tabId: tab.id },
@@ -216,7 +220,7 @@ browser.webNavigation.onCompleted.addListener(({ url, tabId, frameId }) => {
   detect();
   if (detectedAPIs.size) {
     browser.tabs.query({ url }, (tabs) => {
-      tabs.forEach(async (tab) => {
+      tabs.forEach((tab) => {
         browser.scripting.executeScript(
           {
             target: { tabId },

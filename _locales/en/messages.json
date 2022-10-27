@@ -3,7 +3,7 @@
   "extDescription": {
     "message": "An extension to shine light on the Project Fugu 🐡 APIs web apps want to use."
   },
-  "detectedAPIs": { "message": "Detected Project Fugu APIs:" },
+  "detectedAPIs": { "message": "Detected Project Fugu APIs on" },
   "share": { "message": "Share" },
   "download": { "message": "Screenshot" },
   "madeBy": { "message": "Made by" },

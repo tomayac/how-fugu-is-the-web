@@ -6,41 +6,51 @@ import html2canvas from './html2canvas.esm.js';
 
 const CANONICAL = 'https://goo.gle/how-fugu-is-the-web';
 
+const MAX_DISPLAY_URL_LENGTH = 50;
+
 // DOM references.
 const ul = document.querySelector('ul');
-const div = document.body.querySelector('#dynamic');
 const shareButton = document.querySelector('#share');
 const downloadButton = document.querySelector('#download');
-const footer = document.querySelector('footer');
 const heading = document.querySelector('h1');
+const paragraph = document.querySelector('p');
 const ol = document.querySelector('ol');
-const body = document.body;
 
 // This needs to be prepared before the share button is clicked,
 // else, the user gesture would be consumed by the time the PNG
 // image can be created.
 let blob;
 
-// Translated strings.
-document.title = browser.i18n.getMessage('extName');
-heading.textContent = browser.i18n.getMessage('detectedAPIs');
-document.querySelector('#made-by').textContent =
-  browser.i18n.getMessage('madeBy');
-document.querySelector('#source-code').textContent =
-  browser.i18n.getMessage('sourceCode');
-shareButton.textContent = browser.i18n.getMessage('share');
-downloadButton.textContent = browser.i18n.getMessage('download');
-const footerHTML = footer.innerHTML;
-const headingHTML = heading.innerHTML;
-
 // Runs the feature detection functions for all Fugu features.
 const supported = await patternsFunc();
+
+const shortenURL = (url) => {
+  return `${url.hostname}${
+    url.pathname.length > MAX_DISPLAY_URL_LENGTH
+      ? `${url.pathname.substring(0, MAX_DISPLAY_URL_LENGTH)}…`
+      : url.pathname
+  }`;
+};
 
 // Render the message HTML. The message comes from the content script.
 const displayMessage = (message, tab) => {
   if (!message.data) {
     return;
   }
+  // Translated strings.
+  document.title = browser.i18n.getMessage('extName');
+  heading.textContent = document.title;
+  const url = new URL(tab.url);
+  paragraph.innerHTML = `${browser.i18n.getMessage('detectedAPIs')} <a href="${
+    tab.url
+  }">${shortenURL(url)}</a>:`;
+  document.querySelector('#made-by').textContent =
+    browser.i18n.getMessage('madeBy');
+  document.querySelector('#source-code').textContent =
+    browser.i18n.getMessage('sourceCode');
+  shareButton.textContent = browser.i18n.getMessage('share');
+  downloadButton.textContent = browser.i18n.getMessage('download');
+
   ul.innerHTML = '';
   for (const [key, values] of Object.entries(message.data)) {
     const li = document.createElement('li');
@@ -77,7 +87,12 @@ const displayMessage = (message, tab) => {
       const resourceURL = new URL(value.url);
       a.textContent =
         tabOrigin === resourceURL.origin
-          ? resourceURL.pathname + resourceURL.search
+          ? (resourceURL.pathname + resourceURL.search).length >
+            MAX_DISPLAY_URL_LENGTH
+            ? resourceURL.pathname + resourceURL.search + '…'
+            : resourceURL.pathname + resourceURL.search
+          : value.url.length > MAX_DISPLAY_URL_LENGTH
+          ? value.url.substring(0, MAX_DISPLAY_URL_LENGTH) + '…'
           : value.url;
     });
   }
@@ -106,7 +121,7 @@ How Fugu 🐡 is the Web? Find out by installing the extension from ${CANONICAL}
         const shareTextOnly = async (shareData) => {
           delete shareData.blob;
           try {
-            await navigator.share?.(shareData);
+            await navigator.share(shareData);
           } catch (err) {
             if (err.name !== 'AbortError') {
               console.error(err.name, err.message);
@@ -115,11 +130,11 @@ How Fugu 🐡 is the Web? Find out by installing the extension from ${CANONICAL}
         };
         // Try rich sharing first.
         const share = async (shareData) => {
-          if (!navigator.canShare?.(shareData)) {
+          if (!('canShare' in navigator) || !navigator.canShare(shareData)) {
             return shareTextOnly(shareData);
           }
           try {
-            await navigator.share?.(shareData);
+            await navigator.share(shareData);
           } catch (err) {
             if (err.name !== 'AbortError') {
               console.error(err.name, err.message);
@@ -146,6 +161,11 @@ How Fugu 🐡 is the Web? Find out by installing the extension from ${CANONICAL}
 });
 
 const createScreenshot = async (url) => {
+  const clone = document.body.querySelector('main').cloneNode(true);
+  const footer = clone.querySelector('footer');
+  const ol = clone.querySelector('ol');
+  ol.remove();
+
   const computedStyle = getComputedStyle(document.documentElement);
   const mainColor = computedStyle.getPropertyValue('--main-color');
   const mainBackgroundColor = computedStyle.getPropertyValue(
@@ -153,13 +173,13 @@ const createScreenshot = async (url) => {
   );
   const linkColor = computedStyle.getPropertyValue('--link-color');
   document.documentElement.style.color = mainColor;
-  body.style.color = mainColor;
-  body.style.backgroundColor = mainBackgroundColor;
-  body.querySelectorAll('a').forEach((a) => (a.style.color = linkColor));
-  body.querySelectorAll('button').forEach((button) => {
-    button.dataset.display = button.style.display;
+  clone.style.color = mainColor;
+  clone.style.backgroundColor = mainBackgroundColor;
+  clone.querySelectorAll('a').forEach((a) => (a.style.color = linkColor));
+  clone.querySelectorAll('button').forEach((button) => {
     button.style.display = 'none';
   });
+
   const link = footer.querySelector('a:nth-of-type(2)');
   link.textContent = CANONICAL;
   link.href = CANONICAL;
@@ -167,29 +187,25 @@ const createScreenshot = async (url) => {
     browser.i18n.getMessage('sourceCode'),
     '<br/>Install the extension from',
   );
-  heading.innerHTML = headingHTML.replace(
-    /:$/,
-    `<br/><a href ="${url}">${url}</a>:`,
-  );
-  const canvas = await html2canvas(document.body, {
+  document.body.append(clone);
+  const canvas = await html2canvas(clone, {
     backgroundColor: mainBackgroundColor,
+    logging: false,
+    windowWidth: 700,
   });
-  footer.innerHTML = footerHTML;
-  heading.innerHTML = headingHTML;
-  body.querySelectorAll('button').forEach((button) => {
-    button.style.display = button.dataset.display;
-  });
+  clone.remove();
   blob = await fetch(canvas.toDataURL()).then((r) => r.blob());
   return blob;
 };
 
 // Receives messages from the content script.
 browser.runtime.onMessage.addListener((message, sender) => {
-  browser.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
+  browser.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     if (message.type === 'return-results') {
       displayMessage(message, tab);
-      blob = await createScreenshot(tab.url);
-      div.hidden = false;
+      setTimeout(async () => {
+        blob = await createScreenshot(tab.url);
+      }, 0);
       /Apple/.test(navigator.vendor)
         ? shareButton.classList.add('ios')
         : shareButton.classList.add('others');
@@ -200,18 +216,21 @@ browser.runtime.onMessage.addListener((message, sender) => {
         ol.style.visibility = 'visible';
         // Fallback to use Twitter's Web Intent URL, as outlined in
         // https://web.dev/patterns/advanced-apps/share/.
-        downloadButton.addEventListener('click', () => {
-          const a = document.createElement('a');
-          a.download = 'how-fugu-is-the-web.png';
-          a.style.display = 'none';
-          a.href = URL.createObjectURL(blob);
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(() => {
-            document.body.remove(a);
-            URL.revokeObjectURL(a.href);
-          }, 30 * 1000);
-        });
+        if (!downloadButton.dataset.eventListenerAdded) {
+          downloadButton.addEventListener('click', () => {
+            const a = document.createElement('a');
+            a.download = 'how-fugu-is-the-web.png';
+            a.style.display = 'none';
+            a.href = URL.createObjectURL(blob);
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+              document.body.remove(a);
+              URL.revokeObjectURL(a.href);
+            }, 30 * 1000);
+          });
+          downloadButton.dataset.eventListenerAdded = true;
+        }
       }
       shareButton.style.display = 'inline-block';
     }

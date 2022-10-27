@@ -5,9 +5,10 @@
     <title></title>
     <link rel="stylesheet" href="popup.css" />
     <base target="_blank" />
+    <script src="popup.js" type="module"></script>
   </head>
   <body>
-    <div>
+    <main>
       <h1></h1>
       <ol>
         <li>Click <strong>Screenshot</strong> to download the results.</li>
@@ -23,20 +24,15 @@
         <button id="download" type="button"></button>
         <button id="share" type="button"></button>
       </div>
-      <div id="dynamic">
-        <main>
-          <ul class="parent"></ul>
-        </main>
-        <footer>
-          <span id="made-by"></span>
-          <a href="https://twitter.com/tomayac">@tomayac</a>.
-          <span id="source-code"></span>
-          <a href="https://github.com/tomayac/project-fugu-api-detector"
-            >GitHub</a
-          >.
-        </footer>
-      </div>
-    </div>
-    <script src="popup.js" type="module"></script>
+      <p></p>
+      <ul class="parent"></ul>
+      <footer>
+        <span id="made-by"></span>
+        <a href="https://twitter.com/tomayac">@tomayac</a>.
+        <span id="source-code"></span>
+        <a href="https://github.com/tomayac/project-fugu-api-detector">GitHub</a
+        >.
+      </footer>
+    </main>
   </body>
 </html>
