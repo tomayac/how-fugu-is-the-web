@@ -328,10 +328,10 @@ export default {
     blinkFeatureID: 1792,
   },
   'Multi-Screen Window Placement': {
-    regEx: /getScreens\s*\(\)/g,
+    regEx: /getScreenDetails\s*\(\)/g,
     where: 'JavaScript',
-    supported: (async () => 'getScreens' in self)(),
-    featureDetection: `(async () => 'getScreens' in self)()`,
+    supported: (async () => 'getScreenDetails' in self)(),
+    featureDetection: `(async () => 'getScreenDetails' in self)()`,
     documentation:
       'https://developer.chrome.com/articles/multi-screen-window-placement/',
     blinkFeatureID: 3388,
