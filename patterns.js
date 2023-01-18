@@ -4,7 +4,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'AbsoluteOrientationSensor' in self)(),
     featureDetection: `(async () => 'AbsoluteOrientationSensor' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1900,
   },
   'Accelerometer': {
@@ -12,7 +12,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'Accelerometer' in self)(),
     featureDetection: `(async () => 'Accelerometer' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1899,
   },
   'Add to Home Screen': {
@@ -29,7 +29,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'AmbientLightSensor' in self)(),
     featureDetection: `(async () => 'AmbientLightSensor' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1901,
   },
   'Async Clipboard': {
@@ -76,7 +76,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'setAppBadge' in navigator)(),
     featureDetection: `(async () => 'setAppBadge' in navigator)()`,
-    documentation: 'https://web.dev/badging-api/',
+    documentation: 'https://developer.chrome.com/articles/badging-api/',
     blinkFeatureID: 2726,
   },
   'Cache Storage': {
@@ -101,7 +101,8 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'ComputePressureObserver' in self)(),
     featureDetection: `(async () => 'ComputePressureObserver' in self)()`,
-    documentation: 'https://web.dev/compute-pressure/',
+    documentation:
+      'https://developer.chrome.com/docs/web-platform/compute-pressure/',
     blinkFeatureID: 3899,
   },
   'Contact Picker': {
@@ -109,7 +110,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'contacts' in navigator)(),
     featureDetection: `(async () => 'contacts' in navigator)()`,
-    documentation: 'https://web.dev/contact-picker/',
+    documentation: 'https://developer.chrome.com/articles/contact-picker/',
     blinkFeatureID: 2993,
   },
   'Content Index': {
@@ -120,7 +121,8 @@ const patterns = {
       'index' in
         ((await navigator.serviceWorker?.ready) || self.registration))(),
     featureDetection: `(async () => 'serviceWorker' in navigator && 'index' in (await navigator.serviceWorker?.ready || self.registration))()`,
-    documentation: 'https://web.dev/content-indexing-api/',
+    documentation:
+      'https://developer.chrome.com/articles/content-indexing-api/',
     blinkFeatureID: 2985,
   },
   'Credential Management': {
@@ -164,7 +166,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'EyeDropper' in self)(),
     featureDetection: `(async () => 'EyeDropper' in self)()`,
-    documentation: 'https://web.dev/eyedropper/',
+    documentation: 'https://developer.chrome.com/articles/eyedropper/',
     blinkFeatureID: undefined,
   },
   'File Handling': {
@@ -173,7 +175,7 @@ const patterns = {
     supported: (async () =>
       'launchQueue' in self && 'files' in LaunchParams.prototype)(),
     featureDetection: `(async () => 'launchQueue' in self && 'files' in LaunchParams.prototype)()`,
-    documentation: 'https://web.dev/file-handling/',
+    documentation: 'https://developer.chrome.com/articles/file-handling/',
     blinkFeatureID: 3875,
   },
   'File System Access': {
@@ -182,7 +184,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'showOpenFilePicker' in self)(),
     featureDetection: `(async () => 'showOpenFilePicker' in self)()`,
-    documentation: 'https://web.dev/file-system-access/',
+    documentation: 'https://developer.chrome.com/articles/file-system-access/',
     blinkFeatureID: 3340,
   },
   'Origin Private File System': {
@@ -215,7 +217,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'GravitySensor' in self)(),
     featureDetection: `(async () => 'GravitySensor' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 3795,
   },
   'Gyroscope': {
@@ -223,7 +225,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'Gyroscope' in self)(),
     featureDetection: `(async () => 'Gyroscope' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1906,
   },
   'Handwriting Recognition': {
@@ -231,7 +233,8 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'queryHandwritingRecognizerSupport' in navigator)(),
     featureDetection: `(async () => 'queryHandwritingRecognizerSupport' in navigator)()`,
-    documentation: 'https://web.dev/handwriting-recognition/',
+    documentation:
+      'https://developer.chrome.com/docs/web-platform/handwriting-recognition/',
     blinkFeatureID: 3893,
   },
   'HapticsDevice': {
@@ -248,7 +251,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'IdleDetector' in self)(),
     featureDetection: `(async () => 'IdleDetector' in self)()`,
-    documentation: 'https://web.dev/idle-detection/',
+    documentation: 'https://developer.chrome.com/articles/idle-detection/',
     blinkFeatureID: 2834,
   },
   'Ink': {
@@ -268,7 +271,7 @@ const patterns = {
       'MediaStreamTrackGenerator' in self)(),
     featureDetection: `(async () => 'MediaStreamTrackProcessor' in self && 'MediaStreamTrackGenerator' in self)()`,
     documentation:
-      'https://web.dev/mediastreamtrack-insertable-media-processing/',
+      'https://developer.chrome.com/articles/mediastreamtrack-insertable-media-processing/',
     blinkFeatureID: 3729,
   },
   'Launch Handler': {
@@ -277,7 +280,8 @@ const patterns = {
     supported: (async () =>
       'launchQueue' in self && 'targetURL' in LaunchParams.prototype)(),
     featureDetection: `(async () => 'launchQueue' in self && 'targetURL' in LaunchParams.prototype)()`,
-    documentation: 'https://web.dev/launch-handler/',
+    documentation:
+      'https://developer.chrome.com/docs/web-platform/launch-handler/',
     blinkFeatureID: undefined,
   },
   'Linear Acceleration Sensor': {
@@ -285,7 +289,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'LinearAccelerationSensor' in self)(),
     featureDetection: `(async () => 'LinearAccelerationSensor' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 2051,
   },
   'Local Font Access': {
@@ -293,7 +297,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'queryLocalFonts' in self)(),
     featureDetection: `(async () => 'queryLocalFonts' in self)()`,
-    documentation: 'https://web.dev/local-fonts/',
+    documentation: 'https://developer.chrome.com/articles/local-fonts/',
     blinkFeatureID: 4211,
   },
   'Magnetometer': {
@@ -301,7 +305,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'Magnetometer' in self)(),
     featureDetection: `(async () => 'Magnetometer' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1907,
   },
   'Media Capabilities': {
@@ -328,7 +332,8 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'getScreens' in self)(),
     featureDetection: `(async () => 'getScreens' in self)()`,
-    documentation: 'https://web.dev/multi-screen-window-placement/',
+    documentation:
+      'https://developer.chrome.com/articles/multi-screen-window-placement/',
     blinkFeatureID: 3388,
   },
   'Navigation Preload': {
@@ -365,7 +370,8 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'PeriodicSyncManager' in self)(),
     featureDetection: `(async () => 'PeriodicSyncManager' in self)()`,
-    documentation: 'https://web.dev/periodic-background-sync/',
+    documentation:
+      'https://developer.chrome.com/articles/periodic-background-sync/',
     blinkFeatureID: 2931,
   },
   'Persistent Storage': {
@@ -402,7 +408,8 @@ const patterns = {
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
     featureDetection: `(async () => undefined)()`,
-    documentation: 'https://web.dev/url-protocol-handler/',
+    documentation:
+      'https://developer.chrome.com/articles/url-protocol-handler/',
     blinkFeatureID: 3884,
   },
   'Push': {
@@ -421,7 +428,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'RelativeOrientationSensor' in self)(),
     featureDetection: `(async () => 'RelativeOrientationSensor' in self)()`,
-    documentation: 'https://web.dev/generic-sensor/',
+    documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 2019,
   },
   'Screen Wake Lock': {
@@ -429,7 +436,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'wakeLock' in navigator)(),
     featureDetection: `(async () => 'wakeLock' in navigator)()`,
-    documentation: 'https://web.dev/wake-lock/',
+    documentation: 'https://developer.chrome.com/articles/wake-lock/',
     blinkFeatureID: 3005,
   },
   'Service Worker': {
@@ -446,7 +453,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'BarcodeDetector' in self)(),
     featureDetection: `(async () => 'BarcodeDetector' in self)()`,
-    documentation: 'https://web.dev/shape-detection/',
+    documentation: 'https://developer.chrome.com/articles/shape-detection/',
     blinkFeatureID: 3711,
   },
   'Shape Detection (Faces)': {
@@ -454,7 +461,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'FaceDetector' in self)(),
     featureDetection: `(async () => 'FaceDetector' in self)()`,
-    documentation: 'https://web.dev/shape-detection/',
+    documentation: 'https://developer.chrome.com/articles/shape-detection/',
     blinkFeatureID: 3712,
   },
   'Shape Detection (Texts)': {
@@ -462,7 +469,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'TextDetector' in self)(),
     featureDetection: `(async () => 'TextDetector' in self)()`,
-    documentation: 'https://web.dev/shape-detection/',
+    documentation: 'https://developer.chrome.com/articles/shape-detection/',
     blinkFeatureID: 3713,
   },
   'Shortcuts': {
@@ -530,7 +537,7 @@ const patterns = {
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
     featureDetection: `(async () => undefined)()`,
-    documentation: 'https://web.dev/web-share-target/',
+    documentation: 'https://developer.chrome.com/articles/web-share-target/',
     blinkFeatureID: undefined,
   },
   'Web Share Target (Files)': {
@@ -538,7 +545,7 @@ const patterns = {
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
     featureDetection: `(async () => undefined)()`,
-    documentation: 'https://web.dev/web-share-target/',
+    documentation: 'https://developer.chrome.com/articles/web-share-target/',
     blinkFeatureID: undefined,
   },
   'WebBluetooth': {
@@ -546,7 +553,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'bluetooth' in navigator)(),
     featureDetection: `(async () => 'bluetooth' in navigator)()`,
-    documentation: 'https://web.dev/bluetooth/',
+    documentation: 'https://developer.chrome.com/articles/bluetooth/',
     blinkFeatureID: 1670,
   },
   'WebCodecs': {
@@ -554,7 +561,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'MediaStreamTrackProcessor' in self)(),
     featureDetection: `(async () => 'MediaStreamTrackProcessor' in self)()`,
-    documentation: 'https://web.dev/webcodecs/',
+    documentation: 'https://developer.chrome.com/articles/webcodecs/',
     blinkFeatureID: 3728,
   },
   'WebGPU': {
@@ -562,7 +569,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'gpu' in navigator)(),
     featureDetection: `(async () => 'gpu' in navigator)()`,
-    documentation: 'https://web.dev/webgpu',
+    documentation: 'https://developer.chrome.com/docs/web-platform/webgpu/',
     blinkFeatureID: 3888,
   },
   'WebHID': {
@@ -570,7 +577,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'hid' in navigator)(),
     featureDetection: `(async () => 'hid' in navigator)()`,
-    documentation: 'https://web.dev/hid/',
+    documentation: 'https://developer.chrome.com/articles/hid/',
     blinkFeatureID: 2866,
   },
   'WebMIDI': {
@@ -603,7 +610,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'serial' in navigator)(),
     featureDetection: `(async () => 'serial' in navigator)()`,
-    documentation: 'https://web.dev/serial/',
+    documentation: 'https://developer.chrome.com/articles/serial/',
     blinkFeatureID: 2546,
   },
   'WebSocketStream': {
@@ -611,7 +618,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'WebSocketStream' in self)(),
     featureDetection: `(async () => 'WebSocketStream' in self)()`,
-    documentation: 'https://web.dev/websocketstream/',
+    documentation: 'https://developer.chrome.com/articles/websocketstream/',
     blinkFeatureID: 3018,
   },
   'WebTransport': {
@@ -627,7 +634,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'usb' in navigator)(),
     featureDetection: `(async () => 'usb' in navigator)()`,
-    documentation: 'https://web.dev/usb/',
+    documentation: 'https://developer.chrome.com/articles/usb/',
     blinkFeatureID: 1520,
   },
   'Window Controls Overlay': {
