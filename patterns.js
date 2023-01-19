@@ -7,7 +7,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1900,
   },
-  Accelerometer: {
+  'Accelerometer': {
     regEx: /new\s+Accelerometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Accelerometer' in self)(),
@@ -71,7 +71,7 @@ const patterns = {
       'https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API',
     blinkFeatureID: 745,
   },
-  Badging: {
+  'Badging': {
     regEx: /navigator\.setAppBadge\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'setAppBadge' in navigator)(),
@@ -161,7 +161,7 @@ const patterns = {
       'https://developer.chrome.com/docs/android/trusted-web-activity/receive-payments-play-billing/',
     blinkFeatureID: 3397,
   },
-  EyeDropper: {
+  'EyeDropper': {
     regEx: /new\s+EyeDropper\s*\(\)/g,
     where: 'JavaScript',
     supported: (async () => 'EyeDropper' in self)(),
@@ -196,7 +196,7 @@ const patterns = {
       'https://developer.chrome.com/articles/file-system-access/#accessing-the-origin-private-file-system',
     blinkFeatureID: 3428,
   },
-  Gamepad: {
+  'Gamepad': {
     regEx: /navigator\.getGamepads\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getGamepads' in navigator)(),
@@ -204,7 +204,7 @@ const patterns = {
     documentation: 'https://web.dev/gamepad/',
     blinkFeatureID: 1916,
   },
-  getInstalledRelatedApps: {
+  'getInstalledRelatedApps': {
     regEx: /navigator\.getInstalledRelatedApps\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getInstalledRelatedApps' in navigator)(),
@@ -220,7 +220,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 3795,
   },
-  Gyroscope: {
+  'Gyroscope': {
     regEx: /new\s+Gyroscope\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Gyroscope' in self)(),
@@ -237,7 +237,7 @@ const patterns = {
       'https://developer.chrome.com/docs/web-platform/handwriting-recognition/',
     blinkFeatureID: 3893,
   },
-  HapticsDevice: {
+  'HapticsDevice': {
     regEx: /\.haptics\.play\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'HapticsDevice' in self)(),
@@ -254,7 +254,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/idle-detection/',
     blinkFeatureID: 2834,
   },
-  Ink: {
+  'Ink': {
     regEx: /navigator\.ink\.requestPresenter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'ink' in navigator)(),
@@ -300,7 +300,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/local-fonts/',
     blinkFeatureID: 4211,
   },
-  Magnetometer: {
+  'Magnetometer': {
     regEx: /new\s+Magnetometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Magnetometer' in self)(),
@@ -412,7 +412,7 @@ const patterns = {
       'https://developer.chrome.com/articles/url-protocol-handler/',
     blinkFeatureID: 3884,
   },
-  Push: {
+  'Push': {
     regEx: /\.pushManager\.subscribe\s*\(/g,
     where: 'JavaScript',
     supported: (async () =>
@@ -472,7 +472,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/shape-detection/',
     blinkFeatureID: 3713,
   },
-  Shortcuts: {
+  'Shortcuts': {
     regEx: /"shortcuts"/g,
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
@@ -498,7 +498,7 @@ const patterns = {
     documentation: 'https://web.dev/tabbed-application-mode/',
     blinkFeatureID: undefined,
   },
-  VirtualKeyboard: {
+  'VirtualKeyboard': {
     regEx: /navigator\.virtualKeyboard/g,
     where: 'JavaScript',
     supported: (async () => 'virtualKeyboard' in navigator)(),
@@ -548,7 +548,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/web-share-target/',
     blinkFeatureID: undefined,
   },
-  WebBluetooth: {
+  'WebBluetooth': {
     regEx: /navigator\.bluetooth\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'bluetooth' in navigator)(),
@@ -556,7 +556,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/bluetooth/',
     blinkFeatureID: 1670,
   },
-  WebCodecs: {
+  'WebCodecs': {
     regEx: /new\s+MediaStreamTrackProcessor\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'MediaStreamTrackProcessor' in self)(),
@@ -564,7 +564,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/webcodecs/',
     blinkFeatureID: 3728,
   },
-  WebGPU: {
+  'WebGPU': {
     regEx: /navigator\.gpu\.requestAdapter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'gpu' in navigator)(),
@@ -572,7 +572,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/docs/web-platform/webgpu/',
     blinkFeatureID: 3888,
   },
-  WebHID: {
+  'WebHID': {
     regEx: /navigator\.hid\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'hid' in navigator)(),
@@ -580,7 +580,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/hid/',
     blinkFeatureID: 2866,
   },
-  WebMIDI: {
+  'WebMIDI': {
     regEx: /navigator\.requestMIDIAccess\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'requestMIDIAccess' in navigator)(),
@@ -589,7 +589,7 @@ const patterns = {
       'https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API',
     blinkFeatureID: 2029,
   },
-  WebNFC: {
+  'WebNFC': {
     regEx: /new\s+NDEFReader\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'NDEFReader' in self)(),
@@ -597,7 +597,7 @@ const patterns = {
     documentation: 'https://web.dev/nfc/',
     blinkFeatureID: 3094,
   },
-  WebOTP: {
+  'WebOTP': {
     regEx: /transport\s*\:\s*\[["']sms["']\]/g,
     where: 'JavaScript',
     supported: (async () => 'OTPCredential' in self)(),
@@ -605,7 +605,7 @@ const patterns = {
     documentation: 'https://web.dev/web-otp/',
     blinkFeatureID: 2880,
   },
-  WebSerial: {
+  'WebSerial': {
     regEx: /navigator\.serial\.requestPort\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'serial' in navigator)(),
@@ -613,7 +613,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/serial/',
     blinkFeatureID: 2546,
   },
-  WebSocketStream: {
+  'WebSocketStream': {
     regEx: /new\s+WebSocketStream\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebSocketStream' in self)(),
@@ -621,7 +621,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/websocketstream/',
     blinkFeatureID: 3018,
   },
-  WebTransport: {
+  'WebTransport': {
     regEx: /new\s+WebTransport\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebTransport' in self)(),
@@ -629,7 +629,7 @@ const patterns = {
     documentation: 'https://web.dev/webtransport/',
     blinkFeatureID: 3472,
   },
-  WebUSB: {
+  'WebUSB': {
     regEx: /navigator\.usb\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'usb' in navigator)(),
