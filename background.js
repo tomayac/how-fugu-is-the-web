@@ -182,18 +182,10 @@ browser.webRequest.onBeforeRequest.addListener(
             const url = `${details.initiator || details.url}/`;
             browser.tabs.query({ url }, (tabs) => {
               tabs.forEach((tab) => {
-                browser.scripting.executeScript(
-                  {
-                    target: { tabId: tab.id },
-                    files: ['contentInject.js'],
-                  },
-                  () => {
-                    browser.tabs.sendMessage(tab.id, {
-                      type: 'store-results',
-                      data: Object.fromEntries(detectedAPIs),
-                    });
-                  },
-                );
+                browser.tabs.sendMessage(tab.id, {
+                  type: 'store-results',
+                  data: Object.fromEntries(detectedAPIs),
+                });
                 updatePopup(url);
               });
             });
@@ -221,18 +213,10 @@ browser.webNavigation.onCompleted.addListener(({ url, tabId, frameId }) => {
   if (detectedAPIs.size) {
     browser.tabs.query({ url }, (tabs) => {
       tabs.forEach((tab) => {
-        browser.scripting.executeScript(
-          {
-            target: { tabId },
-            files: ['contentInject.js'],
-          },
-          () => {
-            browser.tabs.sendMessage(tab.id, {
-              type: 'store-results',
-              data: Object.fromEntries(detectedAPIs),
-            });
-          },
-        );
+        browser.tabs.sendMessage(tab.id, {
+          type: 'store-results',
+          data: Object.fromEntries(detectedAPIs),
+        });
         console.log(detectedAPIs.entries());
         updatePopup(url);
       });

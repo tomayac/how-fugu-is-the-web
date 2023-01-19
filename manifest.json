@@ -16,6 +16,13 @@
     },
     "default_title": "__MSG_noAPIsDetected__"
   },
+  "content_scripts": [
+    {
+      "js": ["contentInject.js"],
+      "matches": ["<all_urls>"],
+      "run_at": "document_start"
+    }
+  ],
   "icons": {
     "320": "./assets/blowfish.png"
   }
