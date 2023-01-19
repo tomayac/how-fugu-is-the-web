@@ -1,7 +1,7 @@
 {
-  "name": "project-fugu-api-detector",
-  "version": "1.14.0",
-  "description": "The Project Fugu 🐡 API Detector extension provides insights into the advanced Web APIs used by websites.",
+  "name": "how-fugu-is-the-web",
+  "version": "1.14.1",
+  "description": "An extension to shine light on the Project Fugu 🐡 APIs web apps want to use.",
   "scripts": {
     "fix": "npx prettier . --write",
     "prepare": "shx cp -r ./node_modules/fugu-api-data/patterns* . && shx cp -r ./node_modules/html2canvas/dist/html2canvas.esm.js ."
