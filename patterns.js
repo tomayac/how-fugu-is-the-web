@@ -548,7 +548,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/web-share-target/',
     blinkFeatureID: undefined,
   },
-  'WebBluetooth': {
+  'Web Bluetooth': {
     regEx: /navigator\.bluetooth\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'bluetooth' in navigator)(),
@@ -580,7 +580,7 @@ const patterns = {
     documentation: 'https://developer.chrome.com/articles/hid/',
     blinkFeatureID: 2866,
   },
-  'WebMIDI': {
+  'Web MIDI': {
     regEx: /navigator\.requestMIDIAccess\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'requestMIDIAccess' in navigator)(),
@@ -589,7 +589,7 @@ const patterns = {
       'https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API',
     blinkFeatureID: 2029,
   },
-  'WebNFC': {
+  'Web NFC': {
     regEx: /new\s+NDEFReader\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'NDEFReader' in self)(),
@@ -605,7 +605,7 @@ const patterns = {
     documentation: 'https://web.dev/web-otp/',
     blinkFeatureID: 2880,
   },
-  'WebSerial': {
+  'Web Serial': {
     regEx: /navigator\.serial\.requestPort\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'serial' in navigator)(),
