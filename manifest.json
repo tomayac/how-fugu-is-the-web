@@ -1,13 +1,13 @@
 {
   "name": "__MSG_extName__",
   "description": "__MSG_extDescription__",
-  "version": "1.15.0",
+  "version": "1.15.1",
   "default_locale": "en",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["activeTab", "webRequest", "webNavigation", "scripting"],
+  "permissions": ["activeTab", "webRequest", "webNavigation"],
   "host_permissions": ["https://*/*"],
   "action": {
     "default_popup": "popup.html",

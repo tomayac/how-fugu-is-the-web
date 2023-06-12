@@ -1,6 +1,6 @@
 {
   "name": "how-fugu-is-the-web",
-  "version": "1.15.0",
+  "version": "1.15.1",
   "description": "An extension to shine light on the Project Fugu 🐡 APIs web apps want to use.",
   "scripts": {
     "fix": "npx prettier . --write",
@@ -15,7 +15,7 @@
   "devDependencies": {
     "fugu-api-data": "^1.15.0",
     "html2canvas": "^1.4.1",
-    "prettier": "^2.8.6",
+    "prettier": "^2.8.8",
     "shx": "^0.3.4"
   }
 }
