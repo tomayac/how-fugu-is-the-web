@@ -93,7 +93,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'CompressionStream' in self)(),
     featureDetection: `(async () => 'CompressionStream' in self)()`,
-    documentation: 'https://wicg.github.io/compression/',
+    documentation: 'https://developer.chrome.com/blog/compression-streams-api/',
     blinkFeatureID: 3060,
   },
   'Compute Pressure': {
@@ -186,15 +186,6 @@ const patterns = {
     featureDetection: `(async () => 'showOpenFilePicker' in self)()`,
     documentation: 'https://developer.chrome.com/articles/file-system-access/',
     blinkFeatureID: 3340,
-  },
-  'Origin Private File System': {
-    regEx: /navigator\.storage\.getDirectory\s*\(\)/g,
-    where: 'JavaScript',
-    supported: (async () => 'getDirectory' in StorageManager.prototype)(),
-    featureDetection: `(async () => 'getDirectory' in StorageManager.prototype)()`,
-    documentation:
-      'https://developer.chrome.com/articles/file-system-access/#accessing-the-origin-private-file-system',
-    blinkFeatureID: 3428,
   },
   'Gamepad': {
     regEx: /navigator\.getGamepads\s*\(/g,
@@ -327,13 +318,12 @@ const patterns = {
       'https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API',
     blinkFeatureID: 1792,
   },
-  'Multi-Screen Window Placement': {
+  'Window Management': {
     regEx: /getScreenDetails\s*\(\)/g,
     where: 'JavaScript',
     supported: (async () => 'getScreenDetails' in self)(),
     featureDetection: `(async () => 'getScreenDetails' in self)()`,
-    documentation:
-      'https://developer.chrome.com/articles/multi-screen-window-placement/',
+    documentation: 'https://developer.chrome.com/articles/window-management/',
     blinkFeatureID: 3388,
   },
   'Navigation Preload': {
@@ -347,6 +337,14 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/NavigationPreloadManager',
     blinkFeatureID: 1803,
+  },
+  'Origin Private File System': {
+    regEx: /navigator\.storage\.getDirectory\s*\(\)/g,
+    where: 'JavaScript',
+    supported: (async () => 'getDirectory' in StorageManager.prototype)(),
+    featureDetection: `(async () => 'getDirectory' in StorageManager.prototype)()`,
+    documentation: 'https://web.dev/origin-private-file-system/',
+    blinkFeatureID: 3428,
   },
   'Payment Handler': {
     regEx: /\.paymentManager\.instruments\.set\s*\(/g,
@@ -383,6 +381,14 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/persist',
     blinkFeatureID: 1369,
+  },
+  'Storage Buckets': {
+    regEx: /navigator\.storageBuckets\.open\s*\(/g,
+    where: 'JavaScript',
+    supported: (async () => 'storageBuckets' in navigator)(),
+    featureDetection: `(async () => 'storageBuckets' in navigator)()`,
+    documentation: 'https://developer.chrome.com/blog/storage-buckets/',
+    blinkFeatureID: 4378,
   },
   'Pointer Lock (unadjustedMovement)': {
     regEx: /unadjustedMovement\s*\:\s*/g,
@@ -603,7 +609,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'NDEFReader' in self)(),
     featureDetection: `(async () => 'NDEFReader' in self)()`,
-    documentation: 'https://web.dev/nfc/',
+    documentation: 'https://developer.chrome.com/articles/nfc/',
     blinkFeatureID: 3094,
   },
   'WebOTP': {
@@ -611,7 +617,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'OTPCredential' in self)(),
     featureDetection: `(async () => 'OTPCredential' in self)()`,
-    documentation: 'https://web.dev/web-otp/',
+    documentation: 'https://developer.chrome.com/articles/web-otp/',
     blinkFeatureID: 2880,
   },
   'Web Serial': {
@@ -635,7 +641,7 @@ const patterns = {
     where: 'JavaScript',
     supported: (async () => 'WebTransport' in self)(),
     featureDetection: `(async () => 'WebTransport' in self)()`,
-    documentation: 'https://web.dev/webtransport/',
+    documentation: 'https://developer.chrome.com/articles/webtransport/',
     blinkFeatureID: 3472,
   },
   'WebUSB': {
