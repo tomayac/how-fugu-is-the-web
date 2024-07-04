@@ -63,10 +63,10 @@ const displayMessage = (message, tab) => {
     span.innerHTML = supported[key]
       ? `<span class="emoji">✅</span> ${browser.i18n.getMessage('supported')} `
       : supported[key] === undefined
-      ? `<span class="emoji">🤷</span> ${browser.i18n.getMessage('unknown')} `
-      : `<span class="emoji">🚫</span> ${browser.i18n.getMessage(
-          'notSupported',
-        )} `;
+        ? `<span class="emoji">🤷</span> ${browser.i18n.getMessage('unknown')} `
+        : `<span class="emoji">🚫</span> ${browser.i18n.getMessage(
+            'notSupported',
+          )} `;
     const a = document.createElement('a');
     li.append(a);
     a.href = values[0].documentation;
@@ -92,8 +92,8 @@ const displayMessage = (message, tab) => {
             ? resourceURL.pathname + resourceURL.search + '…'
             : resourceURL.pathname + resourceURL.search
           : value.url.length > MAX_DISPLAY_URL_LENGTH
-          ? value.url.substring(0, MAX_DISPLAY_URL_LENGTH) + '…'
-          : value.url;
+            ? value.url.substring(0, MAX_DISPLAY_URL_LENGTH) + '…'
+            : value.url;
     });
   }
 };

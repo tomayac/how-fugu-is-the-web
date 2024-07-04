@@ -6,14 +6,16 @@ const patterns = {
     featureDetection: `(async () => 'AbsoluteOrientationSensor' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1900,
+    chromeStatusID: 5698781827825664,
   },
-  'Accelerometer': {
+  Accelerometer: {
     regEx: /new\s+Accelerometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Accelerometer' in self)(),
     featureDetection: `(async () => 'Accelerometer' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1899,
+    chromeStatusID: 5698781827825664,
   },
   'Add to Home Screen': {
     regEx: /["']beforeinstallprompt["']|\.onbeforeinstallprompt/g,
@@ -23,6 +25,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/BeforeInstallPromptEvent',
     blinkFeatureID: 1436,
+    chromeStatusID: 6560913322672128,
   },
   'Ambient Light Sensor': {
     regEx: /new\s+AmbientLightSensor\s*\(\)/g,
@@ -31,6 +34,7 @@ const patterns = {
     featureDetection: `(async () => 'AmbientLightSensor' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1901,
+    chromeStatusID: 5298357018820608,
   },
   'Async Clipboard': {
     regEx: /navigator\.clipboard\.writeText\s*\(/g,
@@ -40,6 +44,7 @@ const patterns = {
     featureDetection: `(async () => 'clipboard' in navigator && 'writeText' in navigator.clipboard)()`,
     documentation: 'https://web.dev/async-clipboard/',
     blinkFeatureID: 2372,
+    chromeStatusID: 5861289330999296,
   },
   'Async Clipboard (Images)': {
     regEx: /navigator\.clipboard\.write\s*\(/g,
@@ -49,6 +54,7 @@ const patterns = {
     featureDetection: `(async () => 'clipboard' in navigator && 'write' in navigator.clipboard)()`,
     documentation: 'https://web.dev/async-clipboard/',
     blinkFeatureID: 2370,
+    chromeStatusID: 5074658793619456,
   },
   'Background Fetch': {
     regEx: /\.backgroundFetch\.fetch\s*\(["']/g,
@@ -58,6 +64,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Background_Fetch_API',
     blinkFeatureID: 2549,
+    chromeStatusID: 5712608971718656,
   },
   'Background Sync': {
     regEx: /\.sync\.register\s*\(["']/g,
@@ -70,14 +77,16 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API',
     blinkFeatureID: 745,
+    chromeStatusID: 6170807885627392,
   },
-  'Badging': {
+  Badging: {
     regEx: /navigator\.setAppBadge\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'setAppBadge' in navigator)(),
     featureDetection: `(async () => 'setAppBadge' in navigator)()`,
     documentation: 'https://developer.chrome.com/articles/badging-api/',
     blinkFeatureID: 2726,
+    chromeStatusID: 6068482055602176,
   },
   'Cache Storage': {
     regEx: /caches\.open\s*\(/g,
@@ -87,6 +96,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage',
     blinkFeatureID: 3022,
+    chromeStatusID: 6461631328419840,
   },
   'Compression Streams': {
     regEx: /new\s+CompressionStream\s*\(/g,
@@ -95,6 +105,7 @@ const patterns = {
     featureDetection: `(async () => 'CompressionStream' in self)()`,
     documentation: 'https://developer.chrome.com/blog/compression-streams-api/',
     blinkFeatureID: 3060,
+    chromeStatusID: 5855937971617792,
   },
   'Compute Pressure': {
     regEx: /new\s+ComputePressureObserver\s*\(/g,
@@ -104,6 +115,7 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/docs/web-platform/compute-pressure/',
     blinkFeatureID: 3899,
+    chromeStatusID: 5597608644968448,
   },
   'Contact Picker': {
     regEx: /navigator\.contacts\.select\s*\(/g,
@@ -112,6 +124,7 @@ const patterns = {
     featureDetection: `(async () => 'contacts' in navigator)()`,
     documentation: 'https://developer.chrome.com/articles/contact-picker/',
     blinkFeatureID: 2993,
+    chromeStatusID: 6511327140904960,
   },
   'Content Index': {
     regEx: /index\.getAll\s*\(/g,
@@ -124,6 +137,7 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/articles/content-indexing-api/',
     blinkFeatureID: 2985,
+    chromeStatusID: 5658416729030656,
   },
   'Credential Management': {
     regEx: /navigator\.credentials\.get\s*\(/g,
@@ -133,6 +147,7 @@ const patterns = {
     documentation:
       'https://developers.google.com/web/updates/2016/04/credential-management-api',
     blinkFeatureID: 960,
+    chromeStatusID: 5026422640869376,
   },
   'Device Memory': {
     regEx: /navigator\.deviceMemory/g,
@@ -142,6 +157,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Device_Memory_API',
     blinkFeatureID: 2121,
+    chromeStatusID: 5119701235531776,
   },
   'Device Posture': {
     regEx: /navigator\.devicePosture/g,
@@ -151,6 +167,7 @@ const patterns = {
     documentation:
       'https://github.com/w3c/device-posture/blob/gh-pages/README.md',
     blinkFeatureID: undefined,
+    chromeStatusID: 5185813744975872,
   },
   'Digital Goods': {
     regEx: /getDigitalGoodsService\s*\(/g,
@@ -160,14 +177,16 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/docs/android/trusted-web-activity/receive-payments-play-billing/',
     blinkFeatureID: 3397,
+    chromeStatusID: 5339955595313152,
   },
-  'EyeDropper': {
+  EyeDropper: {
     regEx: /new\s+EyeDropper\s*\(\)/g,
     where: 'JavaScript',
     supported: (async () => 'EyeDropper' in self)(),
     featureDetection: `(async () => 'EyeDropper' in self)()`,
     documentation: 'https://developer.chrome.com/articles/eyedropper/',
     blinkFeatureID: undefined,
+    chromeStatusID: 6304275594477568,
   },
   'File Handling': {
     regEx: /"file_handlers"/g,
@@ -177,6 +196,17 @@ const patterns = {
     featureDetection: `(async () => 'launchQueue' in self && 'files' in LaunchParams.prototype)()`,
     documentation: 'https://developer.chrome.com/articles/file-handling/',
     blinkFeatureID: 3875,
+    chromeStatusID: 5721776357113856,
+  },
+  'File System Observer': {
+    regEx: /new\s+FileSystemObserver\s*\(/g,
+    where: 'JavaScript',
+    supported: (async () => 'FileSystemObserver' in self)(),
+    featureDetection: `(async () => 'FileSystemObserver' in self)()`,
+    documentation:
+      'https://github.com/whatwg/fs/blob/main/proposals/FileSystemObserver.md',
+    blinkFeatureID: undefined,
+    chromeStatusID: 4622243656630272,
   },
   'File System Access': {
     regEx:
@@ -186,22 +216,25 @@ const patterns = {
     featureDetection: `(async () => 'showOpenFilePicker' in self)()`,
     documentation: 'https://developer.chrome.com/articles/file-system-access/',
     blinkFeatureID: 3340,
+    chromeStatusID: 6284708426022912,
   },
-  'Gamepad': {
+  Gamepad: {
     regEx: /navigator\.getGamepads\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getGamepads' in navigator)(),
     featureDetection: `(async () => 'getGamepads' in navigator)()`,
     documentation: 'https://web.dev/gamepad/',
     blinkFeatureID: 1916,
+    chromeStatusID: 5118776383111168,
   },
-  'getInstalledRelatedApps': {
+  getInstalledRelatedApps: {
     regEx: /navigator\.getInstalledRelatedApps\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getInstalledRelatedApps' in navigator)(),
     featureDetection: `(async () => 'getInstalledRelatedApps' in navigator)()`,
     documentation: 'https://web.dev/get-installed-related-apps/',
     blinkFeatureID: 1870,
+    chromeStatusID: 5695378309513216,
   },
   'Gravity Sensor': {
     regEx: /new\s+GravitySensor\s*\(/g,
@@ -210,14 +243,16 @@ const patterns = {
     featureDetection: `(async () => 'GravitySensor' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 3795,
+    chromeStatusID: 5384099747332096,
   },
-  'Gyroscope': {
+  Gyroscope: {
     regEx: /new\s+Gyroscope\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Gyroscope' in self)(),
     featureDetection: `(async () => 'Gyroscope' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1906,
+    chromeStatusID: 5698781827825664,
   },
   'Handwriting Recognition': {
     regEx: /navigator\.queryHandwritingRecognizerSupport\s*\(/g,
@@ -227,8 +262,9 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/docs/web-platform/handwriting-recognition/',
     blinkFeatureID: 3893,
+    chromeStatusID: 5263213807534080,
   },
-  'HapticsDevice': {
+  HapticsDevice: {
     regEx: /\.haptics\.play\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'HapticsDevice' in self)(),
@@ -236,6 +272,7 @@ const patterns = {
     documentation:
       'https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/HapticsDevice/explainer.md',
     blinkFeatureID: undefined,
+    chromeStatusID: 5720648543371264,
   },
   'Idle Detection': {
     regEx: /new\s+IdleDetector\s*\(/g,
@@ -244,8 +281,9 @@ const patterns = {
     featureDetection: `(async () => 'IdleDetector' in self)()`,
     documentation: 'https://developer.chrome.com/articles/idle-detection/',
     blinkFeatureID: 2834,
+    chromeStatusID: 4590256452009984,
   },
-  'Ink': {
+  Ink: {
     regEx: /navigator\.ink\.requestPresenter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'ink' in navigator)(),
@@ -253,6 +291,7 @@ const patterns = {
     documentation:
       'https://blogs.windows.com/msedgedev/2021/08/18/enhancing-inking-on-the-web/',
     blinkFeatureID: undefined,
+    chromeStatusID: 5961434129235968,
   },
   'Insertable streams for MediaStreamTrack': {
     regEx: /MediaStreamTrackProcessor\s*\(/g,
@@ -264,6 +303,7 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/articles/mediastreamtrack-insertable-media-processing/',
     blinkFeatureID: 3729,
+    chromeStatusID: 5499415634640896,
   },
   'Launch Handler': {
     regEx: /"launch_handler"/g,
@@ -274,6 +314,7 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/docs/web-platform/launch-handler/',
     blinkFeatureID: undefined,
+    chromeStatusID: 5722383233056768,
   },
   'Linear Acceleration Sensor': {
     regEx: /new\s+LinearAccelerationSensor\s*\(/g,
@@ -282,6 +323,7 @@ const patterns = {
     featureDetection: `(async () => 'LinearAccelerationSensor' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 2051,
+    chromeStatusID: 5698781827825664,
   },
   'Local Font Access': {
     regEx: /queryLocalFonts\s*\(/g,
@@ -290,14 +332,16 @@ const patterns = {
     featureDetection: `(async () => 'queryLocalFonts' in self)()`,
     documentation: 'https://developer.chrome.com/articles/local-fonts/',
     blinkFeatureID: 4211,
+    chromeStatusID: 6234451761692672,
   },
-  'Magnetometer': {
+  Magnetometer: {
     regEx: /new\s+Magnetometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Magnetometer' in self)(),
     featureDetection: `(async () => 'Magnetometer' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 1907,
+    chromeStatusID: 5698781827825664,
   },
   'Media Capabilities': {
     regEx: /navigator\.mediaCapabilities\.decodingInfo\s*\(/g,
@@ -307,6 +351,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Media_Capabilities_API',
     blinkFeatureID: 2239,
+    chromeStatusID: 5869632707624960,
   },
   'Media Session': {
     regEx:
@@ -317,6 +362,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API',
     blinkFeatureID: 1792,
+    chromeStatusID: 5639924124483584,
   },
   'Window Management': {
     regEx: /getScreenDetails\s*\(\)/g,
@@ -325,6 +371,7 @@ const patterns = {
     featureDetection: `(async () => 'getScreenDetails' in self)()`,
     documentation: 'https://developer.chrome.com/articles/window-management/',
     blinkFeatureID: 3388,
+    chromeStatusID: 5252960583942144,
   },
   'Navigation Preload': {
     regEx: /\.navigationPreload\.enable\s*\(\)/g,
@@ -337,6 +384,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/NavigationPreloadManager',
     blinkFeatureID: 1803,
+    chromeStatusID: 5734842339688448,
   },
   'Origin Private File System': {
     regEx: /navigator\.storage\.getDirectory\s*\(\)/g,
@@ -346,6 +394,7 @@ const patterns = {
     featureDetection: `(async () => 'StorageManager' in self && 'getDirectory' in StorageManager.prototype)()`,
     documentation: 'https://web.dev/origin-private-file-system/',
     blinkFeatureID: 3428,
+    chromeStatusID: 5702777582911488,
   },
   'Payment Handler': {
     regEx: /\.paymentManager\.instruments\.set\s*\(/g,
@@ -354,6 +403,7 @@ const patterns = {
     featureDetection: `(async () => 'PaymentInstruments' in self)()`,
     documentation: 'https://web.dev/registering-a-web-based-payment-app/',
     blinkFeatureID: 2397,
+    chromeStatusID: 5160285237149696,
   },
   'Payment Request': {
     regEx: /new\s+PaymentRequest\s*\(/g,
@@ -363,6 +413,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Payment_Request_API',
     blinkFeatureID: 2894,
+    chromeStatusID: 5639348045217792,
   },
   'Periodic Background Sync': {
     regEx: /periodicSync\.register\s*\(/g,
@@ -372,6 +423,7 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/articles/periodic-background-sync/',
     blinkFeatureID: 2931,
+    chromeStatusID: 5689383275462656,
   },
   'Persistent Storage': {
     regEx: /navigator\.storage\.persist\s*\(\)/g,
@@ -382,6 +434,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/persist',
     blinkFeatureID: 1369,
+    chromeStatusID: 5715811364765696,
   },
   'Storage Buckets': {
     regEx: /navigator\.storageBuckets\.open\s*\(/g,
@@ -390,6 +443,7 @@ const patterns = {
     featureDetection: `(async () => 'storageBuckets' in navigator)()`,
     documentation: 'https://developer.chrome.com/blog/storage-buckets/',
     blinkFeatureID: 4378,
+    chromeStatusID: 5739224579964928,
   },
   'Pointer Lock (unadjustedMovement)': {
     regEx: /unadjustedMovement\s*\:\s*/g,
@@ -409,6 +463,7 @@ const patterns = {
     featureDetection: `(async () => 'HTMLParagraphElement' in self ? await (async () => { try { return !!await document.createElement("p").requestPointerLock({ unadjustedMovement: true }) } catch { return 'requestPointerLock' in HTMLParagraphElement.prototype } })() : undefined)()`,
     documentation: 'https://web.dev/disable-mouse-acceleration/',
     blinkFeatureID: 3027,
+    chromeStatusID: 5723553087356928,
   },
   'Protocol Handlers': {
     regEx: /"protocol_handlers"/g,
@@ -418,8 +473,9 @@ const patterns = {
     documentation:
       'https://developer.chrome.com/articles/url-protocol-handler/',
     blinkFeatureID: 3884,
+    chromeStatusID: 5151703944921088,
   },
-  'Push': {
+  Push: {
     regEx: /\.pushManager\.subscribe\s*\(/g,
     where: 'JavaScript',
     supported: (async () =>
@@ -429,6 +485,7 @@ const patterns = {
     featureDetection: `(async () => 'serviceWorker' in navigator && 'pushManager' in (await navigator.serviceWorker?.ready || self.registration))()`,
     documentation: 'https://developer.mozilla.org/en-US/docs/Web/API/Push_API',
     blinkFeatureID: 769,
+    chromeStatusID: 5416033485586432,
   },
   'Relative Orientation Sensor': {
     regEx: /new\s+RelativeOrientationSensor\s*\(/g,
@@ -437,6 +494,7 @@ const patterns = {
     featureDetection: `(async () => 'RelativeOrientationSensor' in self)()`,
     documentation: 'https://developer.chrome.com/articles/generic-sensor/',
     blinkFeatureID: 2019,
+    chromeStatusID: 5698781827825664,
   },
   'Screen Wake Lock': {
     regEx: /navigator\.wakeLock\.request\s*\(/g,
@@ -445,6 +503,7 @@ const patterns = {
     featureDetection: `(async () => 'wakeLock' in navigator)()`,
     documentation: 'https://developer.chrome.com/articles/wake-lock/',
     blinkFeatureID: 3005,
+    chromeStatusID: 4636879949398016,
   },
   'Service Worker': {
     regEx: /navigator\.serviceWorker\.register\s*\(/g,
@@ -454,6 +513,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API',
     blinkFeatureID: 990,
+    chromeStatusID: 6561526227927040,
   },
   'Shape Detection (Barcodes)': {
     regEx: /new\s+BarcodeDetector\s*\(/g,
@@ -462,6 +522,7 @@ const patterns = {
     featureDetection: `(async () => 'BarcodeDetector' in self)()`,
     documentation: 'https://developer.chrome.com/articles/shape-detection/',
     blinkFeatureID: 3711,
+    chromeStatusID: 4757990523535360,
   },
   'Shape Detection (Faces)': {
     regEx: /new\s+FaceDetector\s*\(/g,
@@ -470,6 +531,7 @@ const patterns = {
     featureDetection: `(async () => 'FaceDetector' in self)()`,
     documentation: 'https://developer.chrome.com/articles/shape-detection/',
     blinkFeatureID: 3712,
+    chromeStatusID: 5678216012365824,
   },
   'Shape Detection (Texts)': {
     regEx: /new\s+TextDetector\s*\(/g,
@@ -478,14 +540,16 @@ const patterns = {
     featureDetection: `(async () => 'TextDetector' in self)()`,
     documentation: 'https://developer.chrome.com/articles/shape-detection/',
     blinkFeatureID: 3713,
+    chromeStatusID: 5644087665360896,
   },
-  'Shortcuts': {
+  Shortcuts: {
     regEx: /"shortcuts"/g,
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
     featureDetection: `(async () => undefined)()`,
     documentation: 'https://web.dev/app-shortcuts/',
     blinkFeatureID: undefined,
+    chromeStatusID: 5706099464339456,
   },
   'Storage Estimation': {
     regEx: /navigator\.storage\.estimate\s*\(\)/g,
@@ -496,6 +560,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/estimate',
     blinkFeatureID: 1371,
+    chromeStatusID: 5630353511284736,
   },
   'Tabbed Application Mode': {
     regEx: /"tabbed"/g,
@@ -504,8 +569,9 @@ const patterns = {
     featureDetection: `(async () => undefined)()`,
     documentation: 'https://web.dev/tabbed-application-mode/',
     blinkFeatureID: undefined,
+    chromeStatusID: 5128143454076928,
   },
-  'VirtualKeyboard': {
+  VirtualKeyboard: {
     regEx: /navigator\.virtualKeyboard/g,
     where: 'JavaScript',
     supported: (async () => 'virtualKeyboard' in navigator)(),
@@ -513,6 +579,7 @@ const patterns = {
     documentation:
       'https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/VirtualKeyboardAPI/explainer.md',
     blinkFeatureID: undefined,
+    chromeStatusID: 5717448231747584,
   },
   'Web App Link Handling': {
     regEx: /"handle_links"/g,
@@ -522,6 +589,7 @@ const patterns = {
     documentation:
       'https://github.com/WICG/pwa-url-handler/blob/main/handle_links/explainer.md',
     blinkFeatureID: undefined,
+    chromeStatusID: 5740751225880576,
   },
   'Web Audio': {
     regEx: /new\s+AudioContext\s*\(/g,
@@ -531,6 +599,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API',
     blinkFeatureID: 1698,
+    chromeStatusID: 6261718720184320,
   },
   'Web Share': {
     regEx: /navigator\.share\s*\(/g,
@@ -539,6 +608,7 @@ const patterns = {
     featureDetection: `(async () => 'share' in navigator)()`,
     documentation: 'https://web.dev/web-share/',
     blinkFeatureID: 1501,
+    chromeStatusID: 5668769141620736,
   },
   'Web Share (Files)': {
     regEx: /navigator\.canShare\s*\(/g,
@@ -547,6 +617,7 @@ const patterns = {
     featureDetection: `(async () => 'canShare' in navigator)()`,
     documentation: 'https://web.dev/web-share/',
     blinkFeatureID: 2737,
+    chromeStatusID: 4777349178458112,
   },
   'Web Share Target': {
     regEx: /"share_target"/g,
@@ -555,6 +626,7 @@ const patterns = {
     featureDetection: `(async () => undefined)()`,
     documentation: 'https://developer.chrome.com/articles/web-share-target/',
     blinkFeatureID: undefined,
+    chromeStatusID: 5662315307335680,
   },
   'Web Share Target (Files)': {
     regEx: /"enctype"\s*\:\s*"multipart\/form\-data"/g,
@@ -563,6 +635,7 @@ const patterns = {
     featureDetection: `(async () => undefined)()`,
     documentation: 'https://developer.chrome.com/articles/web-share-target/',
     blinkFeatureID: undefined,
+    chromeStatusID: 6124071381106688,
   },
   'Web Bluetooth': {
     regEx: /navigator\.bluetooth\.requestDevice\s*\(/g,
@@ -571,30 +644,34 @@ const patterns = {
     featureDetection: `(async () => 'bluetooth' in navigator)()`,
     documentation: 'https://developer.chrome.com/articles/bluetooth/',
     blinkFeatureID: 1670,
+    chromeStatusID: 5264933985976320,
   },
-  'WebCodecs': {
+  WebCodecs: {
     regEx: /new\s+MediaStreamTrackProcessor\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'MediaStreamTrackProcessor' in self)(),
     featureDetection: `(async () => 'MediaStreamTrackProcessor' in self)()`,
     documentation: 'https://developer.chrome.com/articles/webcodecs/',
     blinkFeatureID: 3728,
+    chromeStatusID: 5669293909868544,
   },
-  'WebGPU': {
+  WebGPU: {
     regEx: /navigator\.gpu\.requestAdapter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'gpu' in navigator)(),
     featureDetection: `(async () => 'gpu' in navigator)()`,
     documentation: 'https://developer.chrome.com/docs/web-platform/webgpu/',
     blinkFeatureID: 3888,
+    chromeStatusID: 6213121689518080,
   },
-  'WebHID': {
+  WebHID: {
     regEx: /navigator\.hid\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'hid' in navigator)(),
     featureDetection: `(async () => 'hid' in navigator)()`,
     documentation: 'https://developer.chrome.com/articles/hid/',
     blinkFeatureID: 2866,
+    chromeStatusID: 5172464636133376,
   },
   'Web MIDI': {
     regEx: /navigator\.requestMIDIAccess\s*\(/g,
@@ -604,6 +681,7 @@ const patterns = {
     documentation:
       'https://developer.mozilla.org/en-US/docs/Web/API/Web_MIDI_API',
     blinkFeatureID: 2029,
+    chromeStatusID: 4923613069180928,
   },
   'Web NFC': {
     regEx: /new\s+NDEFReader\s*\(/g,
@@ -612,14 +690,16 @@ const patterns = {
     featureDetection: `(async () => 'NDEFReader' in self)()`,
     documentation: 'https://developer.chrome.com/articles/nfc/',
     blinkFeatureID: 3094,
+    chromeStatusID: 6261030015467520,
   },
-  'WebOTP': {
+  WebOTP: {
     regEx: /transport\s*\:\s*\[["']sms["']\]/g,
     where: 'JavaScript',
     supported: (async () => 'OTPCredential' in self)(),
     featureDetection: `(async () => 'OTPCredential' in self)()`,
     documentation: 'https://developer.chrome.com/articles/web-otp/',
     blinkFeatureID: 2880,
+    chromeStatusID: 5873577578463232,
   },
   'Web Serial': {
     regEx: /navigator\.serial\.requestPort\s*\(/g,
@@ -628,30 +708,34 @@ const patterns = {
     featureDetection: `(async () => 'serial' in navigator)()`,
     documentation: 'https://developer.chrome.com/articles/serial/',
     blinkFeatureID: 2546,
+    chromeStatusID: 6577673212002304,
   },
-  'WebSocketStream': {
+  WebSocketStream: {
     regEx: /new\s+WebSocketStream\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebSocketStream' in self)(),
     featureDetection: `(async () => 'WebSocketStream' in self)()`,
     documentation: 'https://developer.chrome.com/articles/websocketstream/',
     blinkFeatureID: 3018,
+    chromeStatusID: 5189728691290112,
   },
-  'WebTransport': {
+  WebTransport: {
     regEx: /new\s+WebTransport\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebTransport' in self)(),
     featureDetection: `(async () => 'WebTransport' in self)()`,
     documentation: 'https://developer.chrome.com/articles/webtransport/',
     blinkFeatureID: 3472,
+    chromeStatusID: 4854144902889472,
   },
-  'WebUSB': {
+  WebUSB: {
     regEx: /navigator\.usb\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'usb' in navigator)(),
     featureDetection: `(async () => 'usb' in navigator)()`,
     documentation: 'https://developer.chrome.com/articles/usb/',
     blinkFeatureID: 1520,
+    chromeStatusID: 5651917954875392,
   },
   'Window Controls Overlay': {
     regEx: /"window\-controls\-overlay"/g,
@@ -660,5 +744,6 @@ const patterns = {
     featureDetection: `(async () => 'windowControlsOverlay' in navigator)()`,
     documentation: 'https://web.dev/window-controls-overlay/',
     blinkFeatureID: 3902,
+    chromeStatusID: 5741247866077184,
   },
 };
