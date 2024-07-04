@@ -8,7 +8,7 @@ const patterns = {
     blinkFeatureID: 1900,
     chromeStatusID: 5698781827825664,
   },
-  Accelerometer: {
+  'Accelerometer': {
     regEx: /new\s+Accelerometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Accelerometer' in self)(),
@@ -79,7 +79,7 @@ const patterns = {
     blinkFeatureID: 745,
     chromeStatusID: 6170807885627392,
   },
-  Badging: {
+  'Badging': {
     regEx: /navigator\.setAppBadge\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'setAppBadge' in navigator)(),
@@ -179,7 +179,7 @@ const patterns = {
     blinkFeatureID: 3397,
     chromeStatusID: 5339955595313152,
   },
-  EyeDropper: {
+  'EyeDropper': {
     regEx: /new\s+EyeDropper\s*\(\)/g,
     where: 'JavaScript',
     supported: (async () => 'EyeDropper' in self)(),
@@ -218,7 +218,7 @@ const patterns = {
     blinkFeatureID: 3340,
     chromeStatusID: 6284708426022912,
   },
-  Gamepad: {
+  'Gamepad': {
     regEx: /navigator\.getGamepads\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getGamepads' in navigator)(),
@@ -227,7 +227,7 @@ const patterns = {
     blinkFeatureID: 1916,
     chromeStatusID: 5118776383111168,
   },
-  getInstalledRelatedApps: {
+  'getInstalledRelatedApps': {
     regEx: /navigator\.getInstalledRelatedApps\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'getInstalledRelatedApps' in navigator)(),
@@ -245,7 +245,7 @@ const patterns = {
     blinkFeatureID: 3795,
     chromeStatusID: 5384099747332096,
   },
-  Gyroscope: {
+  'Gyroscope': {
     regEx: /new\s+Gyroscope\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Gyroscope' in self)(),
@@ -264,7 +264,7 @@ const patterns = {
     blinkFeatureID: 3893,
     chromeStatusID: 5263213807534080,
   },
-  HapticsDevice: {
+  'HapticsDevice': {
     regEx: /\.haptics\.play\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'HapticsDevice' in self)(),
@@ -283,7 +283,7 @@ const patterns = {
     blinkFeatureID: 2834,
     chromeStatusID: 4590256452009984,
   },
-  Ink: {
+  'Ink': {
     regEx: /navigator\.ink\.requestPresenter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'ink' in navigator)(),
@@ -334,7 +334,7 @@ const patterns = {
     blinkFeatureID: 4211,
     chromeStatusID: 6234451761692672,
   },
-  Magnetometer: {
+  'Magnetometer': {
     regEx: /new\s+Magnetometer\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'Magnetometer' in self)(),
@@ -475,7 +475,7 @@ const patterns = {
     blinkFeatureID: 3884,
     chromeStatusID: 5151703944921088,
   },
-  Push: {
+  'Push': {
     regEx: /\.pushManager\.subscribe\s*\(/g,
     where: 'JavaScript',
     supported: (async () =>
@@ -542,7 +542,7 @@ const patterns = {
     blinkFeatureID: 3713,
     chromeStatusID: 5644087665360896,
   },
-  Shortcuts: {
+  'Shortcuts': {
     regEx: /"shortcuts"/g,
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
@@ -571,7 +571,7 @@ const patterns = {
     blinkFeatureID: undefined,
     chromeStatusID: 5128143454076928,
   },
-  VirtualKeyboard: {
+  'VirtualKeyboard': {
     regEx: /navigator\.virtualKeyboard/g,
     where: 'JavaScript',
     supported: (async () => 'virtualKeyboard' in navigator)(),
@@ -646,7 +646,7 @@ const patterns = {
     blinkFeatureID: 1670,
     chromeStatusID: 5264933985976320,
   },
-  WebCodecs: {
+  'WebCodecs': {
     regEx: /new\s+MediaStreamTrackProcessor\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'MediaStreamTrackProcessor' in self)(),
@@ -655,7 +655,7 @@ const patterns = {
     blinkFeatureID: 3728,
     chromeStatusID: 5669293909868544,
   },
-  WebGPU: {
+  'WebGPU': {
     regEx: /navigator\.gpu\.requestAdapter\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'gpu' in navigator)(),
@@ -664,7 +664,7 @@ const patterns = {
     blinkFeatureID: 3888,
     chromeStatusID: 6213121689518080,
   },
-  WebHID: {
+  'WebHID': {
     regEx: /navigator\.hid\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'hid' in navigator)(),
@@ -692,7 +692,7 @@ const patterns = {
     blinkFeatureID: 3094,
     chromeStatusID: 6261030015467520,
   },
-  WebOTP: {
+  'WebOTP': {
     regEx: /transport\s*\:\s*\[["']sms["']\]/g,
     where: 'JavaScript',
     supported: (async () => 'OTPCredential' in self)(),
@@ -710,7 +710,7 @@ const patterns = {
     blinkFeatureID: 2546,
     chromeStatusID: 6577673212002304,
   },
-  WebSocketStream: {
+  'WebSocketStream': {
     regEx: /new\s+WebSocketStream\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebSocketStream' in self)(),
@@ -719,7 +719,7 @@ const patterns = {
     blinkFeatureID: 3018,
     chromeStatusID: 5189728691290112,
   },
-  WebTransport: {
+  'WebTransport': {
     regEx: /new\s+WebTransport\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'WebTransport' in self)(),
@@ -728,7 +728,7 @@ const patterns = {
     blinkFeatureID: 3472,
     chromeStatusID: 4854144902889472,
   },
-  WebUSB: {
+  'WebUSB': {
     regEx: /navigator\.usb\.requestDevice\s*\(/g,
     where: 'JavaScript',
     supported: (async () => 'usb' in navigator)(),
