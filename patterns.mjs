@@ -166,7 +166,7 @@ export default {
     featureDetection: `(async () => 'devicePosture' in navigator)()`,
     documentation:
       'https://github.com/w3c/device-posture/blob/gh-pages/README.md',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 4880,
     chromeStatusID: 5185813744975872,
   },
   'Digital Goods': {
@@ -185,7 +185,7 @@ export default {
     supported: (async () => 'EyeDropper' in self)(),
     featureDetection: `(async () => 'EyeDropper' in self)()`,
     documentation: 'https://developer.chrome.com/articles/eyedropper/',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 5042,
     chromeStatusID: 6304275594477568,
   },
   'File Handling': {
@@ -205,7 +205,7 @@ export default {
     featureDetection: `(async () => 'FileSystemObserver' in self)()`,
     documentation:
       'https://github.com/whatwg/fs/blob/main/proposals/FileSystemObserver.md',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 5020,
     chromeStatusID: 4622243656630272,
   },
   'File System Access': {
@@ -290,7 +290,7 @@ export default {
     featureDetection: `(async () => 'ink' in navigator)()`,
     documentation:
       'https://blogs.windows.com/msedgedev/2021/08/18/enhancing-inking-on-the-web/',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 5017,
     chromeStatusID: 5961434129235968,
   },
   'Insertable streams for MediaStreamTrack': {
@@ -313,7 +313,7 @@ export default {
     featureDetection: `(async () => 'launchQueue' in self && 'targetURL' in LaunchParams.prototype)()`,
     documentation:
       'https://developer.chrome.com/docs/web-platform/launch-handler/',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 4080,
     chromeStatusID: 5722383233056768,
   },
   'Linear Acceleration Sensor': {
@@ -568,7 +568,7 @@ export default {
     supported: (async () => undefined)(),
     featureDetection: `(async () => undefined)()`,
     documentation: 'https://web.dev/tabbed-application-mode/',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 4608,
     chromeStatusID: 5128143454076928,
   },
   'VirtualKeyboard': {
@@ -578,7 +578,7 @@ export default {
     featureDetection: `(async () => 'virtualKeyboard' in navigator)()`,
     documentation:
       'https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/VirtualKeyboardAPI/explainer.md',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 4640,
     chromeStatusID: 5717448231747584,
   },
   'Web App Link Handling': {
@@ -588,7 +588,7 @@ export default {
     featureDetection: `(async () => undefined)()`,
     documentation:
       'https://github.com/WICG/pwa-url-handler/blob/main/handle_links/explainer.md',
-    blinkFeatureID: undefined,
+    blinkFeatureID: 4109,
     chromeStatusID: 5740751225880576,
   },
   'Web Audio': {
