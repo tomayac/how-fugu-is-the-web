@@ -1,6 +1,6 @@
 {
   "name": "how-fugu-is-the-web",
-  "version": "1.19.1",
+  "version": "1.20.0",
   "description": "An extension to shine light on the Project Fugu 🐡 APIs web apps want to use.",
   "scripts": {
     "fix": "npx prettier . --write",
@@ -13,9 +13,9 @@
   "author": "Thomas Steiner <tomac@google.com>",
   "license": "Apache-2.0",
   "devDependencies": {
-    "fugu-api-data": "^1.19.1",
+    "fugu-api-data": "^1.20.0",
     "html2canvas": "^1.4.1",
-    "prettier": "^3.3.3",
+    "prettier": "^3.5.3",
     "shx": "^0.3.4"
   }
 }

@@ -446,7 +446,7 @@ export default {
     chromeStatusID: 5739224579964928,
   },
   'Pointer Lock (unadjustedMovement)': {
-    regEx: /unadjustedMovement\s*\:\s*/g,
+    regEx: /unadjustedMovement\s*:\s*/g,
     where: 'JavaScript',
     supported: (async () =>
       'HTMLParagraphElement' in self
@@ -484,7 +484,7 @@ export default {
         ((await navigator.serviceWorker?.ready) || self.registration))(),
     featureDetection: `(async () => 'serviceWorker' in navigator && 'pushManager' in (await navigator.serviceWorker?.ready || self.registration))()`,
     documentation: 'https://developer.mozilla.org/en-US/docs/Web/API/Push_API',
-    blinkFeatureID: 769,
+    blinkFeatureID: 371,
     chromeStatusID: 5416033485586432,
   },
   'Relative Orientation Sensor': {
@@ -629,7 +629,7 @@ export default {
     chromeStatusID: 5662315307335680,
   },
   'Web Share Target (Files)': {
-    regEx: /"enctype"\s*\:\s*"multipart\/form\-data"/g,
+    regEx: /"enctype"\s*:\s*"multipart\/form-data"/g,
     where: 'Web App Manifest',
     supported: (async () => undefined)(),
     featureDetection: `(async () => undefined)()`,
@@ -693,7 +693,7 @@ export default {
     chromeStatusID: 6261030015467520,
   },
   'WebOTP': {
-    regEx: /transport\s*\:\s*\[["']sms["']\]/g,
+    regEx: /transport\s*:\s*\[["']sms["']\]/g,
     where: 'JavaScript',
     supported: (async () => 'OTPCredential' in self)(),
     featureDetection: `(async () => 'OTPCredential' in self)()`,
@@ -738,7 +738,7 @@ export default {
     chromeStatusID: 5651917954875392,
   },
   'Window Controls Overlay': {
-    regEx: /"window\-controls\-overlay"/g,
+    regEx: /"window-controls-overlay"/g,
     where: 'Web App Manifest',
     supported: (async () => 'windowControlsOverlay' in navigator)(),
     featureDetection: `(async () => 'windowControlsOverlay' in navigator)()`,
