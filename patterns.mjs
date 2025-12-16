@@ -829,7 +829,7 @@ export default {
     chromeStatusID: 5176273954144256,
   },
   'WebMCP': {
-    regEx: /\bnavigator\.modelContext\.provideContext\s*\(/g,
+    regEx: /\bnavigator\.modelContext\./g,
     where: 'JavaScript',
     supported: (async () => 'modelContext' in navigator)(),
     featureDetection: `(async () => 'modelContext' in navigator)()`,
